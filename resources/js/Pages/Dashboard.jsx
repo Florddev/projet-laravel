@@ -322,7 +322,7 @@ export default function Dashboard({ auth }) {
                                         </p>
                                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad assumenda commodi cum delectus error esse illum, nemo nesciunt nihil numquam odit quod quos repellendus ut voluptates! Accusantium ipsum sapiente vel?</p>
 
-                                        <div className="w-full px-12 py-4">
+                                        <div className="w-full pr-14 pt-2">
                                             <Carousel className="w-full">
                                                 <CarouselContent className="-ml-1 w-full">
                                                     {Array.from({ length: 5 }).map((_, index) => (
