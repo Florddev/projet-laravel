@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
+use App\Http\Controllers\MainController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,6 +17,8 @@ use Inertia\Inertia;
 |
 */
 
+
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -25,18 +28,32 @@ Route::get('/', function () {
     ]);
 });
 
+
+
 Route::get('/home', function () {
     return Inertia::render('Home');
 })->middleware(['auth', 'verified'])->name('home');
 
+
+/*
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})
+*/
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/dashboard', [MainController::class, 'home'])->name('dashboard');
+    Route::get('/explore', [MainController::class, 'explore'])->name('main.explore');
+
+    Route::get('/posts/attachement/{fileName}', [PostController::class, 'attachement'])->name('posts.attachement');
+
+    Route::resources([
+        'posts' => PostController::class,
+    ]);
 });
 
 require __DIR__.'/auth.php';
