@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('follows', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('user_followed_id')->constrained();
+            $table->foreignId('user_followed_id')->constrained("users");
             $table->timestamps();
         });
     }
