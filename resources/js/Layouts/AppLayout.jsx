@@ -1,5 +1,5 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import {Button} from "@/Components/ui/button";
 import {
     Bell, CircleUser,
@@ -9,9 +9,12 @@ import {
     Package,
     Package2,
     Search,
+    PlusCircle,
     Settings,
     ShoppingCart,
-    User, Users
+    User, Users, UserRound,
+    Languages,
+    Check, LogOut, Settings2
 } from "lucide-react";
 import {Badge} from "@/Components/ui/badge";
 import {Avatar, AvatarFallback, AvatarImage} from "@/Components/ui/avatar";
@@ -20,11 +23,16 @@ import {Input} from "@/Components/ui/input";
 import {
     DropdownMenu,
     DropdownMenuContent, DropdownMenuItem,
-    DropdownMenuLabel, DropdownMenuSeparator,
-    DropdownMenuTrigger
+    DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuSubTrigger,
+    DropdownMenuTrigger, DropdownMenuSubContent, DropdownMenuPortal, DropdownMenuSub
 } from "@/Components/ui/dropdown-menu";
+import __, {changeLanguage} from "@/Components/translate.jsx";
 
-export default function App({ auth, children }) {
+export default function App({ children }) {
+
+    const auth = usePage().props.auth;
+    const locale = usePage().props.locale;
+
     return (
         <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
             <div className="hidden border-r bg-muted/40 md:block">
@@ -43,30 +51,30 @@ export default function App({ auth, children }) {
                         <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
                             <Link href="#" className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 transition-all text-primary hover:text-primary">
                                 <Home className="h-4 w-4" />
-                                Home
+                                { __('home') }
                             </Link>
                             <Link href="#" className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
                                 <Search className="h-4 w-4" />
-                                Explore
+                                { __('explore') }
                             </Link>
                             <Link href="#" className="flex items-center gap-3 rounded-lg text-muted-foreground px-3 py-2 transition-all hover:text-primary">
                                 <Bell className="h-4 w-4" />
-                                Notifications
+                                { __('notifications') }
                                 <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
                                     6
                                 </Badge>
                             </Link>
                             <Link href="#" className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
                                 <MessageSquareText className="h-4 w-4" />
-                                Message
+                                { __('messages') }
                             </Link>
                             <Link href="#" className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
                                 <User className="h-4 w-4" />
-                                Profil
+                                { __('profile') }
                             </Link>
                             <Link href="#" className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
                                 <Settings className="h-4 w-4" />
-                                Paramètres
+                                { __('settings') }
                             </Link>
                         </nav>
                     </div>
@@ -196,52 +204,67 @@ export default function App({ auth, children }) {
                                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                                 <Input
                                     type="search"
-                                    placeholder="Search products..."
+                                    placeholder={ __('search') }
                                     className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
                                 />
                             </div>
                         </form>
                     </div>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="secondary">
-                                {auth.user.name}
-                                <CircleUser size="icon" className="rounded-full h-5 w-5 ml-2" />
-                                <span className="sr-only">Toggle user menu</span>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <Link href={route('profile.edit')} method="get" className="w-full cursor-pointer">
-                                <DropdownMenuItem>
-                                    Profil
+                    <div className="flex gap-1">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon">
+                                    <Languages className="h-4 w-4" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>{ __('change_language') }</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={() => changeLanguage('fr')}>
+                                    {/* <Check className="mr-2 h-4 w-4"/> */}
+                                    <span>{ __('french') }</span>
                                 </DropdownMenuItem>
-                            </Link>
-                            <Link href={route('logout')} method="post" className="w-full cursor-pointer">
-                                <DropdownMenuItem>
-                                    Logout
+                                <DropdownMenuItem onClick={() => changeLanguage('en')}>
+                                    {/* <Check className="mr-2 h-4 w-4"/> */}
+                                    <span>{ __('english') }</span>
                                 </DropdownMenuItem>
-                            </Link>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+
+
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="secondary">
+                                    {auth.user.name}
+                                    <CircleUser size="icon" className="rounded-full h-5 w-5 ml-2" />
+                                    <span className="sr-only">Toggle user menu</span>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>{ __('my_account') }</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem asChild>
+                                    <Link href={route('profile.edit')} method="get" className="w-full cursor-pointer">
+                                        <UserRound className="mr-2 h-4 w-4" />
+                                        { __('my_profile') }
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <Link href={route('profile.edit')} method="post" className="w-full cursor-pointer">
+                                        <Settings2 className="mr-2 h-4 w-4" />
+                                        { __('edit_account') }
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <Link href={route('logout')} method="post" className="w-full cursor-pointer">
+                                        <LogOut className="mr-2 h-4 w-4" />
+                                        { __('logout') }
+                                    </Link>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
                 </header>
-                {/*<main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">*/}
-                {/*    <div className="flex items-center">*/}
-                {/*        <h1 className="text-lg font-semibold md:text-2xl">Inventory</h1>*/}
-                {/*    </div>*/}
-                {/*    <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm" x-chunk="dashboard-02-chunk-1">*/}
-                {/*        <div className="flex flex-col items-center gap-1 text-center">*/}
-                {/*            <h3 className="text-2xl font-bold tracking-tight">*/}
-                {/*                You have no products*/}
-                {/*            </h3>*/}
-                {/*            <p className="text-sm text-muted-foreground">*/}
-                {/*                You can start selling as soon as you add a product.*/}
-                {/*            </p>*/}
-                {/*            <Button className="mt-4">Add Product</Button>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*</main>*/}
                 { children }
             </div>
         </div>
