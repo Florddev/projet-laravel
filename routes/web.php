@@ -77,7 +77,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/user/avatar/{fileName}', [ProfileController::class, 'avatarAttachment'])->name('user.avatar.attachment');
     Route::get('/user/banner/{fileName}', [ProfileController::class, 'bannerAttachment'])->name('user.banner.attachment');
-
 });
 
 require __DIR__ . '/auth.php';
