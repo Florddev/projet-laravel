@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 /*
@@ -44,15 +45,21 @@ Route::middleware('auth')->group(function () {
     Route::post('/settings', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/settings', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/', function(){ return to_route('home'); })->name('/');
+    Route::get('/', function () {
+        return to_route('home');
+    })->name('/');
     Route::get('/home', [MainController::class, 'home'])->name('home');
 
     Route::get('/explore', [MainController::class, 'explore'])->name('explore');
     Route::get('/search/{search?}', [MainController::class, 'search'])->name('search');
 
-    Route::get('/dashboard', function(){ return to_route('home'); })->name('dashboard');
+    Route::get('/dashboard', function () {
+        return to_route('home');
+    })->name('dashboard');
 
     Route::get('/posts/attachement/{fileName}', [PostController::class, 'attachement'])->name('posts.attachement');
+
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
 
     Route::resources([
         'posts' => PostController::class,
@@ -65,4 +72,4 @@ Route::middleware('auth')->group(function () {
 
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
