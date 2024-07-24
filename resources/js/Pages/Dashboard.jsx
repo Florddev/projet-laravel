@@ -92,7 +92,7 @@ export default function Dashboard({ auth, posts, locale }) {
     };
 
     return (
-        <AppLayout>
+        <AppLayout current_page="home">
             <main className="flex flex-1 justify-between">
                 <div className="flex flex-col w-full p-6">
                     {/*<h1 className="text-lg font-semibold md:text-2xl mb-4">Poster un message</h1>*/}
