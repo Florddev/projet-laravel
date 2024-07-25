@@ -1,6 +1,6 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { Link, usePage } from '@inertiajs/react';
-import {Button} from "@/Components/ui/button";
+import { Button } from "@/Components/ui/button";
 import {
     Bell, CircleUser,
     Home, LineChart,
@@ -16,17 +16,17 @@ import {
     Languages,
     Check, LogOut, Settings2
 } from "lucide-react";
-import {Badge} from "@/Components/ui/badge";
-import {Avatar, AvatarFallback, AvatarImage} from "@/Components/ui/avatar";
-import {Sheet, SheetContent, SheetTrigger} from "@/Components/ui/sheet";
-import {Input} from "@/Components/ui/input";
+import { Badge } from "@/Components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
+import { Sheet, SheetContent, SheetTrigger } from "@/Components/ui/sheet";
+import { Input } from "@/Components/ui/input";
 import {
     DropdownMenu,
     DropdownMenuContent, DropdownMenuItem,
     DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuSubTrigger,
     DropdownMenuTrigger, DropdownMenuSubContent, DropdownMenuPortal, DropdownMenuSub
 } from "@/Components/ui/dropdown-menu";
-import __, {changeLanguage} from "@/Components/translate.jsx";
+import __, { changeLanguage } from "@/Components/translate.jsx";
 
 export default function App({ current_page, children }) {
 
@@ -54,25 +54,32 @@ export default function App({ current_page, children }) {
                     </div>
                     <div className="flex-1">
                         <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-                            <Link href={ route('home') } className={navLinksClass(current_page === 'home')}>
+                            <Link href={route('home')} className={navLinksClass(current_page === 'home')}>
                                 <Home className="h-4 w-4" />
-                                { __('home') }
+                                {__('home')}
                             </Link>
-                            <Link href={ route('search') } className={navLinksClass(current_page === 'explore')}>
+                            <Link href={route('search')} className={navLinksClass(current_page === 'explore')}>
                                 <Search className="h-4 w-4" />
-                                { __('explore') }
+                                {__('explore')}
                             </Link>
-                            <Link href="#" className={navLinksClass(current_page === 'messages')}>
+                            <Link href="#" className={navLinksClass(current_page === 'notifications')}>
+                                <Bell className="h-4 w-4" />
+                                {__('notifications')}
+                                <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+                                    6
+                                </Badge>
+                            </Link>
+                            <Link href={route('chat.index')} className={navLinksClass(current_page === 'messages')}>
                                 <MessageSquareText className="h-4 w-4" />
-                                { __('messages') }
+                                {__('messages')}
                             </Link>
                             <Link href={`/profile/${auth.user.tag}`} className={navLinksClass(current_page === 'profile')}>
                                 <User className="h-4 w-4" />
-                                { __('profile') }
+                                {__('profile')}
                             </Link>
                             <Link href="/settings" className={navLinksClass(current_page === 'settings')}>
                                 <Settings className="h-4 w-4" />
-                                { __('settings') }
+                                {__('settings')}
                             </Link>
                         </nav>
                     </div>
@@ -97,8 +104,8 @@ export default function App({ current_page, children }) {
                                 <AvatarFallback>{ auth.user.name.split(' ').map(word => word[0].toUpperCase()).join('') }</AvatarFallback>
                             </Avatar>
                             <div className="grid gap-1">
-                                <p className="text-sm font-medium leading-none">{ auth.user.name }</p>
-                                <p className="text-sm text-muted-foreground">@{ auth.user.tag }</p>
+                                <p className="text-sm font-medium leading-none">{auth.user.name}</p>
+                                <p className="text-sm text-muted-foreground">@{auth.user.tag}</p>
                             </div>
                         </div>
                     </div>
@@ -119,25 +126,25 @@ export default function App({ current_page, children }) {
                         </SheetTrigger>
                         <SheetContent side="left" className="flex flex-col">
                             <nav className="grid gap-2 text-lg font-medium pt-8">
-                                <Link href={ route('home') } className={navLinksClass(current_page === 'home')}>
+                                <Link href={route('home')} className={navLinksClass(current_page === 'home')}>
                                     <Home className="h-4 w-4" />
-                                    { __('home') }
+                                    {__('home')}
                                 </Link>
-                                <Link href={ route('search') } className={navLinksClass(current_page === 'explore')}>
+                                <Link href={route('search')} className={navLinksClass(current_page === 'explore')}>
                                     <Search className="h-4 w-4" />
-                                    { __('explore') }
+                                    {__('explore')}
                                 </Link>
                                 <Link href="#" className={navLinksClass(current_page === 'messages')}>
                                     <MessageSquareText className="h-4 w-4" />
-                                    { __('messages') }
+                                    {__('messages')}
                                 </Link>
                                 <Link href={`/profile/${auth.user.tag}`} className={navLinksClass(current_page === 'profile')}>
                                     <User className="h-4 w-4" />
-                                    { __('profile') }
+                                    {__('profile')}
                                 </Link>
                                 <Link href="/settings" className={navLinksClass(current_page === 'settings')}>
                                     <Settings className="h-4 w-4" />
-                                    { __('settings') }
+                                    {__('settings')}
                                 </Link>
                             </nav>
                             <div className="mt-auto">
@@ -161,8 +168,8 @@ export default function App({ current_page, children }) {
                                         <AvatarFallback>{ auth.user.name.split(' ').map(word => word[0].toUpperCase()).join('') }</AvatarFallback>
                                     </Avatar>
                                     <div className="grid gap-1">
-                                        <p className="text-sm font-medium leading-none">{ auth.user.name }</p>
-                                        <p className="text-sm text-muted-foreground">@{ auth.user.tag }</p>
+                                        <p className="text-sm font-medium leading-none">{auth.user.name}</p>
+                                        <p className="text-sm text-muted-foreground">@{auth.user.tag}</p>
                                     </div>
                                 </div>
                             </div>
@@ -175,7 +182,7 @@ export default function App({ current_page, children }) {
                                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                                 <Input
                                     type="search"
-                                    placeholder={ __('search') }
+                                    placeholder={__('search')}
                                     className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
                                 />
                             </div>
@@ -190,15 +197,15 @@ export default function App({ current_page, children }) {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>{ __('change_language') }</DropdownMenuLabel>
+                                <DropdownMenuLabel>{__('change_language')}</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem onClick={() => changeLanguage('fr')}>
                                     {/* <Check className="mr-2 h-4 w-4"/> */}
-                                    <span>{ __('french') }</span>
+                                    <span>{__('french')}</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => changeLanguage('en')}>
                                     {/* <Check className="mr-2 h-4 w-4"/> */}
-                                    <span>{ __('english') }</span>
+                                    <span>{__('english')}</span>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
@@ -213,31 +220,31 @@ export default function App({ current_page, children }) {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>{ __('my_account') }</DropdownMenuLabel>
+                                <DropdownMenuLabel>{__('my_account')}</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem asChild>
                                     <Link href={route('profile.show', { tag: auth.user.tag })} method="get" className="w-full cursor-pointer">
                                         <UserRound className="mr-2 h-4 w-4" />
-                                        { __('my_profile') }
+                                        {__('my_profile')}
                                     </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem asChild>
                                     <Link href={route('profile.edit')} method="get" className="w-full cursor-pointer">
                                         <Settings2 className="mr-2 h-4 w-4" />
-                                        { __('edit_account') }
+                                        {__('edit_account')}
                                     </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem asChild>
                                     <Link href={route('logout')} method="post" className="w-full cursor-pointer">
                                         <LogOut className="mr-2 h-4 w-4" />
-                                        { __('logout') }
+                                        {__('logout')}
                                     </Link>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>
                 </header>
-                { children }
+                {children}
             </div>
         </div>
     );

@@ -23,7 +23,6 @@ function debounce(func, wait) {
 }
 
 export default function SearchPage({ postResults = [], userResults = [], search = '' }) {
-    console.log({ postResults, userResults, search });
 
     const [searchTerm, setSearchTerm] = useState(search);
 
@@ -58,7 +57,7 @@ export default function SearchPage({ postResults = [], userResults = [], search 
                             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                             <Input
                                 type="search"
-                                placeholder={ __('search') }
+                                placeholder={__('search')}
                                 className="w-full appearance-none bg-background pl-8 shadow-none bg-muted/40"
                                 value={searchTerm}
                                 onChange={handleSearchChange}

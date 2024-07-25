@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\FollowerController;
@@ -46,15 +48,28 @@ Route::middleware('auth')->group(function () {
     Route::post('/settings', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/settings', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/', function(){ return to_route('home'); })->name('/');
+    Route::get('/', function () {
+        return to_route('home');
+    })->name('/');
     Route::get('/home', [MainController::class, 'home'])->name('home');
 
     Route::get('/explore', [MainController::class, 'explore'])->name('explore');
     Route::get('/search/{search?}', [MainController::class, 'search'])->name('search');
 
-    Route::get('/dashboard', function(){ return to_route('home'); })->name('dashboard');
+    Route::get('/dashboard', function () {
+        return to_route('home');
+    })->name('dashboard');
 
     Route::get('/posts/attachement/{fileName}', [PostController::class, 'attachement'])->name('posts.attachement');
+
+    Route::get('/chats', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chats/{id}', [ChatController::class, 'show'])->name('chat.show');
+    Route::post('/chats', [ChatController::class, 'store'])->name('chat.store');
+    //Route::delete('/chats/{id}', [ChatController::class, 'destroy'])->name('chat.destroy');
+
+    Route::post('/chats/{chatId}/messages', [MessageController::class, 'store'])->name('message.store');
+    Route::put('/messages/{id}', [MessageController::class, 'update'])->name('message.update');
+    Route::delete('/messages/{id}', [MessageController::class, 'destroy'])->name('message.destroy');
 
     Route::resources([
         'posts' => PostController::class,
@@ -69,7 +84,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/user/avatar/{fileName}', [ProfileController::class, 'avatarAttachment'])->name('user.avatar.attachment');
     Route::get('/user/banner/{fileName}', [ProfileController::class, 'bannerAttachment'])->name('user.banner.attachment');
-
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

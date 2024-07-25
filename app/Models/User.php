@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Chat;
 
 class User extends Authenticatable
 {
@@ -45,6 +46,12 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    /**
+     * Get the chats for the user.
+     */
+    public function chats()
+    {
+        return $this->hasMany(Chat::class);
     public function followers()
     {
         return $this->belongsToMany(User::class, 'follows', 'user_followed_id', 'user_id');
