@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import AppLayout from '@/Layouts/AppLayout';
 import { Search } from "lucide-react";
-import { Button } from "@/Components/ui/button";
 import __ from "@/Components/translate";
 import { Input } from "@/Components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/Components/ui/carousel";
 import { Card, CardContent } from "@/Components/ui/card";
-import { useForm, router } from '@inertiajs/react';
+import { router, Link } from '@inertiajs/react';
+import AccountSidebar from "@/Components/AccountSidebar";
 
 // Fonction debounce personnalisée
 function debounce(func, wait) {
@@ -22,7 +22,7 @@ function debounce(func, wait) {
     };
 }
 
-export default function SearchPage({ postResults = [], userResults = [], search = '' }) {
+export default function SearchPage({ postResults = [], userResults = [], search = '', last_followers }) {
 
     const [searchTerm, setSearchTerm] = useState(search);
 

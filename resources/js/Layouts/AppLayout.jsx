@@ -62,13 +62,6 @@ export default function App({ current_page, children }) {
                                 <Search className="h-4 w-4" />
                                 {__('explore')}
                             </Link>
-                            <Link href="#" className={navLinksClass(current_page === 'notifications')}>
-                                <Bell className="h-4 w-4" />
-                                {__('notifications')}
-                                <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                                    6
-                                </Badge>
-                            </Link>
                             <Link href={route('chat.index')} className={navLinksClass(current_page === 'messages')}>
                                 <MessageSquareText className="h-4 w-4" />
                                 {__('messages')}
