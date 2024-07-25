@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Follow;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class MainController extends Controller
@@ -30,6 +32,28 @@ class MainController extends Controller
     public function explore()
     {
         return Inertia::render('Explore');
+    }
+
+    public function search(string $search)
+    {
+        // Séparer la phrase en mots
+        $searchWords = explode(' ', $search);
+
+        $postQuery = Post::where('content', 'LIKE', '%' . $search . '%');
+        $userQuery = User::where('name', 'LIKE', '%' . $search . '%');
+        foreach ($searchWords as $word) {
+            $postQuery->orWhere('content', 'LIKE', '%' . $word . '%');
+            $userQuery->orWhere('name', 'LIKE', '%' . $word . '%');
+        }
+
+        $search_post_results = $postQuery->orderBy('created_at')->with('createur')->get();
+        $search_user_results = $userQuery->get();
+
+        return Inertia::render('Search', [
+            'search' => $search,
+            'post_result' => $search_post_results ?? [],
+            'user_result' => $search_user_results ?? []
+        ]);
     }
 
 

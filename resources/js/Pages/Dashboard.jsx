@@ -92,7 +92,7 @@ export default function Dashboard({ auth, posts, locale }) {
     };
 
     return (
-        <AppLayout>
+        <AppLayout current_page="home">
             <main className="flex flex-1 justify-between">
                 <div className="flex flex-col w-full p-6">
                     {/*<h1 className="text-lg font-semibold md:text-2xl mb-4">Poster un message</h1>*/}
@@ -179,9 +179,7 @@ export default function Dashboard({ auth, posts, locale }) {
                                                             <CarouselItem key={index} className="pl-1 lg:basis-1/2">
                                                                 <div className="p-1">
                                                                     <Card className={`bg-cover bg-center`} style={{"background-image": `url("/posts/attachement/post-${ post.id }_${ index }.webp")`}}>
-                                                                        <CardContent className="flex aspect-square items-center justify-center p-6">
-                                                                            {/*<span className="text-2xl font-semibold">{index + 1}</span>*/}
-                                                                        </CardContent>
+                                                                        <CardContent className="flex aspect-square items-center justify-center p-6" />
                                                                     </Card>
                                                                 </div>
                                                             </CarouselItem>
