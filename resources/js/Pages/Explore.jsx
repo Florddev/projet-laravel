@@ -5,8 +5,14 @@ import {
 import { Button } from "@/Components/ui/button"
 import __ from "@/Components/translate";
 import {Input} from "@/Components/ui/input";
+import { router } from '@inertiajs/react';
 
 export default function Explore({ post_result, user_result }) {
+
+    const search = (value) => {
+        router.visit('search/' + value);
+    }
+
     return (
         <AppLayout current_page="explore">
             <main className="flex flex-1 justify-between w-full">
@@ -25,6 +31,9 @@ export default function Explore({ post_result, user_result }) {
                                 className="w-full appearance-none bg-background pl-8 shadow-none bg-muted/40"
                             />
                         </div>
+                        <Button onClick={(e) => search(e.target.value)}>
+                            { __('search') }
+                        </Button>
                     </div>
                 </div>
                 <div className="hidden sticky top-0 max-h-screen flex-1 items-center justify-center border-l p-6 md:flex md:min-w-60 lg:min-w-80 2xl:min-w-96">
