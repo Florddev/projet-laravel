@@ -27,5 +27,14 @@ return [
     'send_message' => 'Envoyer le message',
     'attach_file' => 'Joindre un fichier',
 
-    'news' => 'Actualités'
+    'news' => 'Actualités',
+    'posts' => 'Posts',
+    'users' => 'Utilisateurs',
+
+    'follow' => 'Suivre',
+    'unfollow' => 'Se Désabonner',
+    'edit_profile' => 'Modifier le profil',
+    'register_since' => 'Inscrit depuis le',
+    'followers' => 'abonnés',
+    'followings' => 'abonnements'
 ];

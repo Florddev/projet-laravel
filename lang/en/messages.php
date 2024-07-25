@@ -29,5 +29,14 @@ return [
 
     'news' => 'News',
     'posts' => 'Posts',
-    'users' => 'Users'
+    'users' => 'Users',
+
+    'follow' => 'Follow',
+    'unfollow' => 'Unfollow',
+    'edit_profile' => 'Edit Profile',
+    'register_since' => 'Register since',
+    'followers' => 'followers',
+    'followings' => 'followings',
+    'last_followers' => 'Last followers'
+
 ];

@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import AppLayout from '@/Layouts/AppLayout';
 import { Search } from "lucide-react";
-import { Button } from "@/Components/ui/button";
 import __ from "@/Components/translate";
 import { Input } from "@/Components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/Components/ui/carousel";
 import { Card, CardContent } from "@/Components/ui/card";
-import { useForm, router } from '@inertiajs/react';
+import { router, Link } from '@inertiajs/react';
+import AccountSidebar from "@/Components/AccountSidebar";
 
 // Fonction debounce personnalisée
 function debounce(func, wait) {
@@ -22,7 +22,7 @@ function debounce(func, wait) {
     };
 }
 
-export default function SearchPage({ postResults = [], userResults = [], search = '' }) {
+export default function SearchPage({ postResults = [], userResults = [], search = '', last_followers }) {
 
     const [searchTerm, setSearchTerm] = useState(search);
 
@@ -71,17 +71,19 @@ export default function SearchPage({ postResults = [], userResults = [], search 
                     <div className="flex flex-col gap-4">
                         {userResults.map((user, index) => (
                             <div key={index} className="flex flex-1 justify-between gap-3 border rounded-lg roude p-4">
-                                <Avatar className="hidden h-10 w-10 sm:flex">
-                                    <AvatarImage src={`/user/avatar/userAvatar-${ user.id }`} alt={ user.name } />
-                                    <AvatarFallback>{user.name.split(' ').map(word => word[0].toUpperCase()).join('')}</AvatarFallback>
-                                </Avatar>
+                                <Link href={`/profile/${user.tag}`}>
+                                    <Avatar className="hidden h-10 w-10 sm:flex">
+                                        <AvatarImage src={`/user/avatar/userAvatar-${ user.id }`} alt={ user.name } />
+                                        <AvatarFallback>{user.name.split(' ').map(word => word[0].toUpperCase()).join('')}</AvatarFallback>
+                                    </Avatar>
+                                </Link>
                                 <div className="flex flex-col w-full">
                                     <div className="grid w-full">
-                                        <p className="flex align-middle gap-2 font-bold leading-none">
+                                        <Link href={`/profile/${user.tag}`} className="flex align-middle gap-2 font-bold leading-none hover:underline">
                                             {user.name}
-                                            <span className="text-sm font-medium text-muted-foreground">@{user.tag}</span>
-                                        </p>
-                                        <p className="w-full">Bio de l'utilisateur</p>
+                                            <span className="text-sm font-medium text-muted-foreground">@{ user.tag }</span>
+                                        </Link>
+                                        <p className="w-full">{ user.bio ?? '...' }</p>
                                     </div>
                                 </div>
                             </div>
@@ -93,62 +95,56 @@ export default function SearchPage({ postResults = [], userResults = [], search 
                     )}
                     <div className="flex flex-col gap-4">
                         {postResults.map((post, index) => (
-                            <div key={index} className="flex flex-1 justify-between gap-3 border rounded-lg roude p-4">
-                                <Avatar className="hidden h-10 w-10 sm:flex">
-                                    <AvatarImage src={`/user/avatar/userAvatar-${ post.createur.id }`} alt={ post.createur.name } />
-                                    <AvatarFallback>{post.createur.name.split(' ').map(word => word[0].toUpperCase()).join('')}</AvatarFallback>
-                                </Avatar>
-                                <div className="flex flex-col w-full">
-                                    <div className="grid w-full">
-                                        <p className="flex align-middle gap-2 font-bold leading-none">
-                                            {post.createur.name}
-                                            <span className="text-sm font-medium text-muted-foreground">@{post.createur.tag}</span>
-                                        </p>
-                                        <p className="w-full">{post.content}</p>
+                            <Link href={route('posts.show', post.id)} className="flex flex-col gap-2">
+                                <div key={index} className="flex flex-1 justify-between gap-3 border rounded-lg roude p-4">
+                                    <Link href={`/profile/${post.createur.tag}`}>
+                                        <Avatar className="hidden h-10 w-10 sm:flex">
+                                            <AvatarImage src={`/user/avatar/userAvatar-${ post.createur.id }`} alt={ post.createur.name } />
+                                            <AvatarFallback>{post.createur.name.split(' ').map(word => word[0].toUpperCase()).join('')}</AvatarFallback>
+                                        </Avatar>
+                                    </Link>
+                                    <div className="flex flex-col w-full">
+                                        <div className="grid w-full">
+                                            <Link href={`/profile/${post.createur.tag}`} className="flex align-middle gap-2 font-bold leading-none hover:underline">
+                                                {post.createur.name}
+                                                <span className="text-sm font-medium text-muted-foreground">@{post.createur.tag}</span>
+                                            </Link>
+                                            <p className="w-full">{post.content}</p>
 
-                                        {post.number_of_images > 0 && (
-                                            <div className="w-full pr-14 pt-2">
-                                                <Carousel className="w-full">
-                                                    <CarouselContent className="-ml-1 w-full">
-                                                        {Array.from({ length: post.number_of_images }).map((_, index) => (
-                                                            <CarouselItem key={index} className="pl-1 lg:basis-1/2">
-                                                                <div className="p-1">
-                                                                    <Card className={`bg-cover bg-center`} style={{ "background-image": `url("/posts/attachement/post-${post.id}_${index}")` }}>
-                                                                        <CardContent className="flex aspect-square items-center justify-center p-6" />
-                                                                    </Card>
-                                                                </div>
-                                                            </CarouselItem>
-                                                        ))}
-                                                    </CarouselContent>
-                                                    {post.number_of_images > 2 && (
-                                                        <div>
-                                                            <CarouselPrevious />
-                                                            <CarouselNext />
-                                                        </div>
-                                                    )}
-                                                </Carousel>
-                                            </div>
-                                        )}
+                                            {post.number_of_images > 0 && (
+                                                <div className="w-full pr-14 pt-2">
+                                                    <Carousel className="w-full">
+                                                        <CarouselContent className="-ml-1 w-full">
+                                                            {Array.from({ length: post.number_of_images }).map((_, index) => (
+                                                                <CarouselItem key={index} className="pl-1 lg:basis-1/2">
+                                                                    <div className="p-1">
+                                                                        <Card className={`bg-cover bg-center`} style={{ "background-image": `url("/posts/attachement/post-${post.id}_${index}")` }}>
+                                                                            <CardContent className="flex aspect-square items-center justify-center p-6" />
+                                                                        </Card>
+                                                                    </div>
+                                                                </CarouselItem>
+                                                            ))}
+                                                        </CarouselContent>
+                                                        {post.number_of_images > 2 && (
+                                                            <div>
+                                                                <CarouselPrevious />
+                                                                <CarouselNext />
+                                                            </div>
+                                                        )}
+                                                    </Carousel>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                     {(postResults?.length === 0 && userResults?.length === 0) && (
                         <p className="text-sm text-muted-foreground">Aucun post ni compte correspondant à la recherche "{searchTerm}" n'a été trouvé...</p>
                     )}
                 </div>
-                <div className="hidden sticky top-0 max-h-screen flex-1 items-center justify-center border-l p-6 md:flex md:min-w-60 lg:min-w-80 2xl:min-w-96">
-                    <div className="flex flex-col items-center gap-1 text-center">
-                        <h3 className="text-2xl font-bold tracking-tight">
-                            You have no products
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                            You can start selling as soon as you add a product.
-                        </p>
-                        <Button className="mt-4">Add Product</Button>
-                    </div>
-                </div>
+                <AccountSidebar data={last_followers}/>
             </main>
         </AppLayout>
     );

@@ -14,8 +14,11 @@ import { useToast } from "@/Components/ui/use-toast.ts";
 import InputError from "@/Components/InputError.jsx";
 import __ from "@/Components/translate.jsx";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/Components/ui/dialog";
+import AccountSidebar from "@/Components/AccountSidebar.jsx";
 
-export default function Dashboard({ auth, posts, locale }) {
+export default function Dashboard({ auth, posts, locale, last_followers }) {
+    console.log(last_followers);
+
     const { showToast, ToastContainer } = useToast();
 
     const { data: postData, setData: setPostData, post: createPost, processing: postProcessing, errors: postErrors, reset: resetPostForm } = useForm({
@@ -151,16 +154,18 @@ export default function Dashboard({ auth, posts, locale }) {
                         {posts.map((post, index) => (
                             <Link href={route('posts.show', post.id)} className="flex flex-col gap-2">
                                 <div key={index} className="flex flex-1 justify-between gap-3 border rounded-lg p-4">
-                                    <Avatar className="hidden h-10 w-10 sm:flex">
-                                        <AvatarImage src={`/user/avatar/userAvatar-${post.createur.id}`} alt={post.createur.name} />
-                                        <AvatarFallback>{post.createur.name.split(' ').map(word => word[0].toUpperCase()).join('')}</AvatarFallback>
-                                    </Avatar>
+                                    <Link href={`/profile/${post.createur.tag}`}>
+                                        <Avatar className="hidden h-10 w-10 sm:flex">
+                                            <AvatarImage src={`/user/avatar/userAvatar-${ post.createur.id }`} alt={ post.createur.name } />
+                                            <AvatarFallback>{post.createur.name.split(' ').map(word => word[0].toUpperCase()).join('')}</AvatarFallback>
+                                        </Avatar>
+                                    </Link>
                                     <div className="flex flex-col w-full">
                                         <div className="grid w-full">
-                                            <p className="flex align-middle gap-2 font-bold leading-none">
+                                            <Link href={`/profile/${post.createur.tag}`} className="flex align-middle gap-2 font-bold leading-none hover:underline">
                                                 {post.createur.name}
                                                 <span className="text-sm font-medium text-muted-foreground">@{post.createur.tag}</span>
-                                            </p>
+                                            </Link>
                                             <p className="w-full">{post.content}</p>
 
                                             {post.number_of_images > 0 && (
@@ -197,17 +202,7 @@ export default function Dashboard({ auth, posts, locale }) {
                         ))}
                     </div>
                 </div>
-                <div className="hidden sticky top-0 max-h-screen flex-1 items-center justify-center border-l p-6 md:flex md:min-w-60 lg:min-w-80 2xl:min-w-96">
-                    <div className="flex flex-col items-center gap-1 text-center">
-                        <h3 className="text-2xl font-bold tracking-tight">
-                            You have no products
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                            You can start selling as soon as you add a product.
-                        </p>
-                        <Button className="mt-4">Add Product</Button>
-                    </div>
-                </div>
+                <AccountSidebar data={last_followers}/>
             </main>
 
             <Dialog open={showReplyModal} onOpenChange={setShowReplyModal}>

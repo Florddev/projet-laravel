@@ -11,8 +11,9 @@ import { MessageSquare } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/Components/ui/dialog";
 import { Textarea } from "@/Components/ui/textarea.tsx";
 import InputError from "@/Components/InputError.jsx";
+import __ from "@/Components/translate.jsx";
 
-export default function Account({ auth, user, posts, isFollowing }) {
+export default function Account({ auth, user, posts, isFollowing, last_followers }) {
     const { post } = useForm();
     const { data: replyData, setData: setReplyData, post: createReply, processing: replyProcessing, errors: replyErrors, reset: resetReplyForm } = useForm({
         replyContent: '',
@@ -96,30 +97,30 @@ export default function Account({ auth, user, posts, isFollowing }) {
                                                 onClick={handleUnfollow}
                                                 className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-700 transition"
                                             >
-                                                Se désabonner
+                                                { __('unfollow') }
                                             </button>
                                         ) : (
                                             <button
                                                 onClick={handleFollow}
                                                 className="bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200 transition"
                                             >
-                                                Suivre
+                                                { __('follow') }
                                             </button>
                                         )
                                     ) : (
                                         <Link href="/settings" className="bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200 transition">
-                                            Modifier le profil
+                                            { __('edit_profile') }
                                         </Link>
                                     )}
                                 </div>
                                 <p className="text-gray-400">@{user.tag}</p>
                                 <p className="my-4">{user.bio}</p>
                                 <div className="flex flex-wrap items-center gap-4 text-gray-400 text-sm">
-                                    <span className="flex items-center"><span className="mr-1">🗓</span>Inscrit depuis le {new Date(user.created_at).toLocaleDateString()}</span>
+                                    <span className="flex items-center"><span className="mr-1">🗓</span>{ __('register_since') } {new Date(user.created_at).toLocaleDateString()}</span>
                                 </div>
                                 <div className="flex items-center gap-4 mt-4 text-sm">
-                                    <span><strong>{user.followings_count}</strong> abonnements</span>
-                                    <span><strong>{user.followers_count}</strong> abonnés</span>
+                                    <span><strong>{user.followings_count}</strong> { __('followings') }</span>
+                                    <span><strong>{user.followers_count}</strong> { __('followers') }</span>
                                 </div>
                             </main>
 
@@ -127,16 +128,18 @@ export default function Account({ auth, user, posts, isFollowing }) {
                                 {posts.map((post, index) => (
                                     <Link href={route('posts.show', post.id)} className="flex flex-col gap-2">
                                         <div className="flex flex-1 justify-between gap-3 border p-4 rounded-md">
-                                            <Avatar className="hidden h-10 w-10 sm:flex">
-                                                <AvatarImage src={`/user/avatar/userAvatar-${post.createur.id}`} alt={post.createur.name} />
-                                                <AvatarFallback>{ post.createur.name.split(' ').map(word => word[0].toUpperCase()).join('') }</AvatarFallback>
-                                            </Avatar>
+                                            <Link href={`/profile/${post.createur.tag}`}>
+                                                <Avatar className="hidden h-10 w-10 sm:flex">
+                                                    <AvatarImage src={`/user/avatar/userAvatar-${post.createur.id}`} alt={post.createur.name} />
+                                                    <AvatarFallback>{ post.createur.name.split(' ').map(word => word[0].toUpperCase()).join('') }</AvatarFallback>
+                                                </Avatar>
+                                            </Link>
                                             <div className="flex flex-col w-full">
                                                 <div className="grid w-full">
-                                                    <p className="flex align-middle gap-2 font-bold leading-none">
-                                                        { post.createur.name }
-                                                        <span className="text-sm font-medium text-muted-foreground">@{ post.createur.tag }</span>
-                                                    </p>
+                                                    <Link href={`/profile/${post.createur.tag}`} className="flex align-middle gap-2 font-bold leading-none hover:underline">
+                                                        {post.createur.name}
+                                                        <span className="text-sm font-medium text-muted-foreground">@{post.createur.tag}</span>
+                                                    </Link>
                                                     <p className="w-full">{ post.content }</p>
 
                                                     { post.number_of_images > 0 ? (
@@ -172,9 +175,7 @@ export default function Account({ auth, user, posts, isFollowing }) {
                                 ))}
                             </div>
                         </div>
-                        <aside className="mt-8 md:mt-0 w-full md:w-96">
-                            <AccountSidebar />
-                        </aside>
+                        <AccountSidebar data={last_followers}/>
                     </div>
                 </div>
             </div>
