@@ -1,61 +1,31 @@
-import { useState } from 'react';
 import AppLayout from '@/Layouts/AppLayout';
-import {Link, useForm} from '@inertiajs/react'
 import {
-    Bell,
-    CircleUser,
-    Home,
-    LineChart,
-    Menu, MessageCircle, MessageSquareText,
-    Package,
-    Package2,
-    Search, Settings,
-    ShoppingCart, User,
-    Users,
+    ArrowLeft, Search,
 } from "lucide-react"
+import { Button } from "@/Components/ui/button"
+import __ from "@/Components/translate";
+import {Input} from "@/Components/ui/input";
 
-import { CornerDownLeft, Mic, Paperclip } from "lucide-react"
-
-import { Label } from "@/Components/ui/label.tsx"
-import { Textarea } from "@/Components/ui/textarea.tsx"
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-    TooltipProvider,
-} from "@/Components/ui/tooltip.tsx"
-
-import { Badge } from "@/Components/ui/badge.tsx"
-import { Button } from "@/Components/ui/button.tsx"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/Components/ui/card.tsx"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/Components/ui/dropdown-menu.tsx"
-import { Input } from "@/Components/ui/input.tsx"
-import { Sheet, SheetContent, SheetTrigger } from "@/Components/ui/sheet.tsx"
-import {Avatar, AvatarFallback, AvatarImage} from "@/Components/ui/avatar.tsx";
-import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/Components/ui/carousel.tsx";
-import { useToast } from "@/Components/ui/use-toast.ts"
-import InputError from "@/Components/InputError.jsx";
-import __, { changeLanguage } from "@/Components/translate.jsx";
-
-export default function Dashboard() {
+export default function Explore({ post_result, user_result }) {
     return (
         <AppLayout current_page="explore">
-            <main className="flex flex-1 justify-between">
+            <main className="flex flex-1 justify-between w-full">
                 <div className="flex flex-col w-full p-6">
-                    hey
+                    <div className="flex gap-2 w-full">
+                        {/*
+                        <Button variant="ghost" size="icon">
+                            <ArrowLeft></ArrowLeft>
+                        </Button>
+                         */}
+                        <div className="relative w-full">
+                            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                            <Input
+                                type="search"
+                                placeholder={ __('search') }
+                                className="w-full appearance-none bg-background pl-8 shadow-none bg-muted/40"
+                            />
+                        </div>
+                    </div>
                 </div>
                 <div className="hidden sticky top-0 max-h-screen flex-1 items-center justify-center border-l p-6 md:flex md:min-w-60 lg:min-w-80 2xl:min-w-96">
                     <div className="flex flex-col items-center gap-1 text-center">

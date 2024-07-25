@@ -46,7 +46,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/', function(){ return to_route('home'); })->name('/');
     Route::get('/home', [MainController::class, 'home'])->name('home');
+
     Route::get('/explore', [MainController::class, 'explore'])->name('explore');
+    Route::get('/search/{search}', [MainController::class, 'search'])->name('search');
 
     Route::get('/dashboard', function(){ return to_route('home'); })->name('dashboard');
 
