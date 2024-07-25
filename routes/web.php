@@ -55,7 +55,7 @@ Route::middleware('auth')->group(function () {
         'posts' => PostController::class,
     ]);
 
-    Route::get('/{tag}', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/{tag}', [ProfileController::class, 'show'])->name('profile.show');
 });
 
 require __DIR__.'/auth.php';
