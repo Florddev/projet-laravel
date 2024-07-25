@@ -7,7 +7,7 @@ import { Card } from "@/Components/ui/card";
 
 export default function Edit({ auth, mustVerifyEmail, status }) {
     return (
-        <AppLayout auth={auth}>
+        <AppLayout current_page="settings">
             <Head title="Profile" />
 
             <div className="py-12">

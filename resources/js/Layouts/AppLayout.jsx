@@ -45,10 +45,12 @@ export default function App({ current_page, children }) {
                             {/*<Package2 className="h-6 w-6" />*/}
                             <span className="">OnlyFun</span>
                         </Link>
+                        {/*
                         <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
                             <Bell className="h-4 w-4" />
                             <span className="sr-only">Toggle notifications</span>
                         </Button>
+                        */}
                     </div>
                     <div className="flex-1">
                         <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
@@ -56,16 +58,9 @@ export default function App({ current_page, children }) {
                                 <Home className="h-4 w-4" />
                                 { __('home') }
                             </Link>
-                            <Link href={ route('explore') } className={navLinksClass(current_page === 'explore')}>
+                            <Link href={ route('search') } className={navLinksClass(current_page === 'explore')}>
                                 <Search className="h-4 w-4" />
                                 { __('explore') }
-                            </Link>
-                            <Link href="#" className={navLinksClass(current_page === 'notifications')}>
-                                <Bell className="h-4 w-4" />
-                                { __('notifications') }
-                                <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                                    6
-                                </Badge>
                             </Link>
                             <Link href="#" className={navLinksClass(current_page === 'messages')}>
                                 <MessageSquareText className="h-4 w-4" />
@@ -98,7 +93,7 @@ export default function App({ current_page, children }) {
                         {/*</Card>*/}
                         <div className="flex items-center gap-4">
                             <Avatar className="hidden h-9 w-9 sm:flex">
-                                <AvatarImage src="/avatars/03.png" alt="Avatar" />
+                                <AvatarImage src={`/user/avatar/userAvatar-${ auth.user.id }.webp`} alt={ auth.user.name } />
                                 <AvatarFallback>{ auth.user.name.split(' ').map(word => word[0].toUpperCase()).join('') }</AvatarFallback>
                             </Avatar>
                             <div className="grid gap-1">
@@ -123,51 +118,26 @@ export default function App({ current_page, children }) {
                             </Button>
                         </SheetTrigger>
                         <SheetContent side="left" className="flex flex-col">
-                            <nav className="grid gap-2 text-lg font-medium">
-                                <Link
-                                    href="#"
-                                    className="flex items-center gap-2 text-lg font-semibold"
-                                >
-                                    <Package2 className="h-6 w-6" />
-                                    <span className="sr-only">Acme Inc</span>
+                            <nav className="grid gap-2 text-lg font-medium pt-8">
+                                <Link href={ route('home') } className={navLinksClass(current_page === 'home')}>
+                                    <Home className="h-4 w-4" />
+                                    { __('home') }
                                 </Link>
-                                <Link
-                                    href="#"
-                                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                                >
-                                    <Home className="h-5 w-5" />
-                                    Dashboard
+                                <Link href={ route('search') } className={navLinksClass(current_page === 'explore')}>
+                                    <Search className="h-4 w-4" />
+                                    { __('explore') }
                                 </Link>
-                                <Link
-                                    href="#"
-                                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
-                                >
-                                    <ShoppingCart className="h-5 w-5" />
-                                    Orders
-                                    <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                                        6
-                                    </Badge>
+                                <Link href="#" className={navLinksClass(current_page === 'messages')}>
+                                    <MessageSquareText className="h-4 w-4" />
+                                    { __('messages') }
                                 </Link>
-                                <Link
-                                    href="#"
-                                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                                >
-                                    <Package className="h-5 w-5" />
-                                    Products
+                                <Link href={`/profile/${auth.user.tag}`} className={navLinksClass(current_page === 'profile')}>
+                                    <User className="h-4 w-4" />
+                                    { __('profile') }
                                 </Link>
-                                <Link
-                                    href="#"
-                                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                                >
-                                    <Users className="h-5 w-5" />
-                                    Customers
-                                </Link>
-                                <Link
-                                    href="#"
-                                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                                >
-                                    <LineChart className="h-5 w-5" />
-                                    Analytics
+                                <Link href="/settings" className={navLinksClass(current_page === 'settings')}>
+                                    <Settings className="h-4 w-4" />
+                                    { __('settings') }
                                 </Link>
                             </nav>
                             <div className="mt-auto">
@@ -187,21 +157,19 @@ export default function App({ current_page, children }) {
                                 {/*</Card>*/}
                                 <div className="flex items-center gap-4">
                                     <Avatar className="hidden h-9 w-9 sm:flex">
-                                        <AvatarImage src="/avatars/03.png" alt="Avatar" />
-                                        <AvatarFallback>IN</AvatarFallback>
+                                        <AvatarImage src={`/user/avatar/userAvatar-${ auth.user.id }.webp`} alt="Avatar" />
+                                        <AvatarFallback>{ auth.user.name.split(' ').map(word => word[0].toUpperCase()).join('') }</AvatarFallback>
                                     </Avatar>
                                     <div className="grid gap-1">
-                                        <p className="text-sm font-medium leading-none">Isabella Nguyen</p>
-                                        <p className="text-sm text-muted-foreground">
-                                            isabella.nguyen@email.com
-                                        </p>
+                                        <p className="text-sm font-medium leading-none">{ auth.user.name }</p>
+                                        <p className="text-sm text-muted-foreground">@{ auth.user.tag }</p>
                                     </div>
-                                    <div className="ml-auto font-medium">+$299.00</div>
                                 </div>
                             </div>
                         </SheetContent>
                     </Sheet>
                     <div className="w-full flex-1">
+                        {/*
                         <form>
                             <div className="relative">
                                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -212,6 +180,7 @@ export default function App({ current_page, children }) {
                                 />
                             </div>
                         </form>
+                        */}
                     </div>
                     <div className="flex gap-1">
                         <DropdownMenu>
