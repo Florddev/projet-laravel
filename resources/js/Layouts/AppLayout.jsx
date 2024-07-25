@@ -100,7 +100,7 @@ export default function App({ children }) {
                             </Avatar>
                             <div className="grid gap-1">
                                 <p className="text-sm font-medium leading-none">{ auth.user.name }</p>
-                                <p className="text-sm text-muted-foreground">{ auth.user.email }</p>
+                                <p className="text-sm text-muted-foreground">@{ auth.user.tag }</p>
                             </div>
                         </div>
                     </div>

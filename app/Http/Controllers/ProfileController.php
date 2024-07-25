@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\User;
+use App\Models\Post;
 
 class ProfileController extends Controller
 {
@@ -59,5 +61,20 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function show($tag) {
+        $user = User::where('tag', $tag)->first();
+
+        if (!$user) {
+            abort(404);
+        }
+
+        $posts = Post::where('user_id', $user->id)->with('createur')->get();
+        
+        return Inertia::render('Profile/Account', [
+            'user' => $user,
+            'posts' => $posts,
+        ]);
     }
 }

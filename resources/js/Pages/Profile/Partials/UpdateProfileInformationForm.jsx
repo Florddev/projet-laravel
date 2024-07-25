@@ -13,13 +13,17 @@ import {
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
 import { Button } from "@/Components/ui/button";
+import { Textarea } from "@/Components/ui/textarea";
 
 export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }) {
     const user = usePage().props.auth.user;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
         name: user.name,
+        tag: user.tag,
         email: user.email,
+        avatar: null,
+        banner: null,
     });
 
     const submit = (e) => {
@@ -55,6 +59,35 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     </div>
 
                     <div>
+                        <Label htmlFor="bio">Bio</Label>
+
+                        <Textarea
+                            id="bio"
+                            className="mt-1 block w-full"
+                            value={data.bio}
+                            onChange={(e) => setData('bio', e.target.value)}
+                            isFocused
+                        />
+
+                        <InputError className="mt-2" message={errors.bio} />
+                    </div>
+
+                    <div>
+                        <Label htmlFor="tag">Tag</Label>
+
+                        <Input
+                            id="tag"
+                            className="mt-1 block w-full"
+                            value={data.tag}
+                            onChange={(e) => setData('tag', e.target.value)}
+                            required
+                            autoComplete="username"
+                        />
+
+                        <InputError className="mt-2" message={errors.tag} />
+                    </div>
+
+                    <div>
                         <Label htmlFor="email">Email</Label>
 
                         <Input
@@ -68,6 +101,32 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         />
 
                         <InputError className="mt-2" message={errors.email} />
+                    </div>
+
+                    <div>
+                        <Label htmlFor="banner">Banner</Label>
+
+                        <Input
+                            id="banner"
+                            type="file"
+                            className="mt-1 block w-full"
+                            onChange={(e) => setData('banner', e.target.files[0])}
+                        />
+
+                        <InputError className="mt-2" message={errors.banner} />
+                    </div>
+
+                    <div>
+                        <Label htmlFor="avatar">Avatar</Label>
+
+                        <Input
+                            id="avatar"
+                            type="file"
+                            className="mt-1 block w-full"
+                            onChange={(e) => setData('avatar', e.target.files[0])}
+                        />
+
+                        <InputError className="mt-2" message={errors.avatar} />
                     </div>
 
                     {mustVerifyEmail && user.email_verified_at === null && (

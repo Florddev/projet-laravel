@@ -167,7 +167,7 @@ export default function Dashboard({ auth, posts, locale }) {
                                     <div className="grid w-full">
                                         <p className="flex align-middle gap-2 font-bold leading-none">
                                             { post.createur.name }
-                                            <span className="text-sm font-medium text-muted-foreground">{ post.createur.email }</span>
+                                            <span className="text-sm font-medium text-muted-foreground">@{ post.createur.tag }</span>
                                         </p>
                                         <p className="w-full">{ post.content }</p>
 
@@ -179,9 +179,7 @@ export default function Dashboard({ auth, posts, locale }) {
                                                             <CarouselItem key={index} className="pl-1 lg:basis-1/2">
                                                                 <div className="p-1">
                                                                     <Card className={`bg-cover bg-center`} style={{"background-image": `url("/posts/attachement/post-${ post.id }_${ index }.webp")`}}>
-                                                                        <CardContent className="flex aspect-square items-center justify-center p-6">
-                                                                            {/*<span className="text-2xl font-semibold">{index + 1}</span>*/}
-                                                                        </CardContent>
+                                                                        <CardContent className="flex aspect-square items-center justify-center p-6" />
                                                                     </Card>
                                                                 </div>
                                                             </CarouselItem>
