@@ -1,4 +1,5 @@
 import AppLayout from '@/Layouts/AppLayout';
+import { useForm } from '@inertiajs/react';
 
 import {
     Send,
@@ -25,6 +26,21 @@ import { Avatar, AvatarFallback } from "@/Components/ui/avatar.tsx";
 
 
 export default function Chat({ auth, chats }) {
+    const { data, setData, post } = useForm({
+        tag: '',
+    });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        post(route('chat.store'), data);
+    };
+
+    const getInitials = (name) => {
+        const parts = name.split(' ');
+        const initials = parts.map(part => part[0]).join('');
+        return initials;
+    };
+
     return (
         <AppLayout auth={auth}>
 
@@ -43,79 +59,48 @@ export default function Chat({ auth, chats }) {
                                         </Button>
                                     </DialogTrigger>
                                     <DialogContent className="sm:max-w-[425px]">
-                                        <DialogHeader>
-                                            <DialogTitle>Créer une conversation</DialogTitle>
-                                            <DialogDescription>
-                                                Ajouter la personne que vous souhaitez contacter.
-                                            </DialogDescription>
-                                        </DialogHeader>
-                                        <div className="grid gap-4 py-4">
-                                            <div className="grid grid-cols-4 items-center gap-4">
-                                                <Label htmlFor="name" className="text-right">
-                                                    Tag
-                                                </Label>
-                                                <Input id="name" className="col-span-3" />
+                                        <form onSubmit={handleSubmit}>
+                                            <DialogHeader>
+                                                <DialogTitle>Créer une conversation</DialogTitle>
+                                                <DialogDescription>
+                                                    Ajouter la personne que vous souhaitez contacter.
+                                                </DialogDescription>
+                                            </DialogHeader>
+                                            <div className="grid gap-4 py-4">
+                                                <div className="grid grid-cols-4 items-center gap-4">
+                                                    <Label htmlFor="tag" className="text-right">
+                                                        Tag
+                                                    </Label>
+                                                    <Input id="tag" className="col-span-3" value={data.tag} onChange={(e) => setData('tag', e.target.value)} />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <DialogFooter>
-                                            <Button type="submit">Créer</Button>
-                                        </DialogFooter>
+                                            <DialogFooter>
+                                                <Button type="submit">Créer</Button>
+                                            </DialogFooter>
+                                        </form>
                                     </DialogContent>
                                 </Dialog>
                             </nav>
                             <form className="grid w-full items-start gap-2">
-                                <fieldset className="flex w-full items-center rounded-lg border p-4 gap-5">
-                                    <Avatar className="h-10 w-10">
-                                        <AvatarFallback>FD</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <div className="flex items-center gap-2">
-                                            <p>Florian</p>
-                                            <span className='text-sm'>.</span>
-                                            <p className="text-gray-500">Jan 05, 2022</p>
-                                        </div>
-                                        <p className="text-muted-foreground text-sm">Hi, how are you?</p>
-                                    </div>
-                                </fieldset>
-                                <fieldset className="flex w-full items-center rounded-lg border p-4 gap-5 relative">
-                                    <Avatar className="h-10 w-10">
-                                        <AvatarFallback>JM</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <div className="flex items-center gap-2">
-                                            <p>Jeremy</p>
-                                            <span className='text-sm'>.</span>
-                                            <p className="text-gray-500">Dec 30, 2021</p>
-                                        </div>
-                                        <p className="text-muted-foreground text-sm">Ah je suis bien!</p>
-                                    </div>
-                                </fieldset>
-                                <fieldset className="flex w-full items-center rounded-lg border p-4 gap-5">
-                                    <Avatar className="h-10 w-10">
-                                        <AvatarFallback>IA</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <div className="flex items-center gap-2">
-                                            <p>Issam</p>
-                                            <span className='text-sm'>.</span>
-                                            <p className="text-gray-500">Nov 14, 2021</p>
-                                        </div>
-                                        <p className="text-muted-foreground text-sm">Pnl, c'est de la merde!</p>
-                                    </div>
-                                </fieldset>
-                                <fieldset className="flex w-full items-center rounded-lg border p-4 gap-5 relative">
-                                    <Avatar className="h-10 w-10">
-                                        <AvatarFallback>DY</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <div className="flex items-center gap-2">
-                                            <p>Dryss</p>
-                                            <span className='text-sm'>.</span>
-                                            <p className="text-gray-500">Aou 19, 2021</p>
-                                        </div>
-                                        <p className="text-muted-foreground text-sm">Bernard, je veux faire..</p>
-                                    </div>
-                                </fieldset>
+                                {chats.length > 0 ? (
+                                    chats.map((chat) => (
+                                        <fieldset className="flex w-full items-center rounded-lg border p-4 gap-5">
+                                            <Avatar className="h-10 w-10">
+                                                <AvatarFallback>{getInitials(chat.participant.name)}</AvatarFallback>
+                                            </Avatar>
+                                            <div>
+                                                <div className="flex items-center gap-2">
+                                                    <p>{chat.participant.name}</p>
+                                                    <span className='text-sm'>.</span>
+                                                    <p className="text-gray-500">Jan 05, 2022</p>
+                                                </div>
+                                                <p className="text-muted-foreground text-sm">Hi, how are you?</p>
+                                            </div>
+                                        </fieldset>
+                                    ))
+                                ) : (
+                                    <p className='p-2'>Vous n'avez aucune conversation pour le moment.</p>
+                                )}
                             </form>
                         </div>
                         <div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2">

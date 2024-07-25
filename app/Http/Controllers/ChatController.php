@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Message;
+use App\Models\User;
 use App\Models\Chat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class ChatController extends Controller
@@ -38,16 +39,27 @@ class ChatController extends Controller
     // Créer un nouveau chat
     public function store(Request $request)
     {
-        $request->validate([
-            'participant_id' => 'required|exists:users,id',
-        ]);
+        $tag = $request->tag;
+        $user = User::where('tag', $tag)->firstOrFail();
+
+        if (empty($user)) {
+            return Redirect::route('chat.index')->with('error', 'Utilisateur introuvable.');
+        }
+
+        if ($user->id == Auth::id()) {
+            return Redirect::route('chat.index')->with('error', 'Vous ne pouvez pas vous envoyer un message à vous-même.');
+        }
+
+        if (Chat::where('user_id', Auth::id())->where('participant_id', $user->id)->exists()) {
+            return Redirect::route('chat.index')->with('error', 'Vous avez déjà un chat avec cet utilisateur.');
+        }
 
         $chat = new Chat();
         $chat->user_id = Auth::id();
-        $chat->participant_id = $request->participant_id;
+        $chat->participant_id = $user->id;
         $chat->save();
 
-        return redirect()->route('chat.show', ['id' => $chat->id]);
+        return Redirect::route('chat.index')->with('success', 'Chat créé avec succès.');
     }
 
     // Supprimer un chat
