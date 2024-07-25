@@ -154,15 +154,15 @@ export default function Register() {
                                 </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="last-name">Tag</Label>
-                                    <Input 
-                                        id="tag" 
+                                    <Input
+                                        id="tag"
                                         name="tag"
                                         value={data.tag}
                                         className="mt-1 block w-full"
                                         autoComplete="tag"
                                         onChange={(e) => setData('tag', e.target.value)}
-                                        placeholder="@robinson" 
-                                        required 
+                                        placeholder="maxrobinson"
+                                        required
                                     />
                                 </div>
                             </div>

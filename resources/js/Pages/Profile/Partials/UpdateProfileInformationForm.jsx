@@ -21,6 +21,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     const { data, setData, patch, post, errors, processing, recentlySuccessful } = useForm({
         name: user.name,
         tag: user.tag,
+        bio: user.bio,
         email: user.email,
         avatar: null,
         banner: null,

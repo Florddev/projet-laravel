@@ -6,6 +6,8 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\FollowerController;
+use App\Http\Controllers\ReplyController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -73,7 +75,12 @@ Route::middleware('auth')->group(function () {
         'posts' => PostController::class,
     ]);
 
+    Route::post('/posts/{post}/replies', [ReplyController::class, 'store'])->name('replies.store');
+    Route::get('/posts/{id}/', [ReplyController::class, 'show'])->name('posts.show');
+
     Route::get('/profile/{tag}', [ProfileController::class, 'show'])->name('profile.show');
+    Route::post('/profile/{tag}/follow', [FollowerController::class, 'follow'])->name('profile.follow');
+    Route::post('/profile/{tag}/unfollow', [FollowerController::class, 'unfollow'])->name('profile.unfollow');
 
     Route::get('/user/avatar/{fileName}', [ProfileController::class, 'avatarAttachment'])->name('user.avatar.attachment');
     Route::get('/user/banner/{fileName}', [ProfileController::class, 'bannerAttachment'])->name('user.banner.attachment');

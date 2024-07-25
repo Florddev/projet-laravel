@@ -36,6 +36,14 @@ class ProfileController extends Controller
 
         $request->user()->fill($request->validated());
 
+        if ($request->has('bio')) {
+            $user->bio = $request->bio;
+        }
+
+        if ($request->has('tag')) {
+            $user->tag = $request->tag;
+        }
+
         if ($request->hasFile('banner')) {
             $file = $request->file('banner');
             $file->storeAs('UserBanner', "userBanner-{$user->id}.webp", 'public');
@@ -77,31 +85,34 @@ class ProfileController extends Controller
     }
 
     public function show($tag) {
-        $user = User::where('tag', $tag)->first();
+        $user = User::where('tag', $tag)->withCount(['followers', 'followings'])->firstOrFail();
 
         if (!$user) {
             abort(404);
         }
 
         $posts = Post::where('user_id', $user->id)->with('createur')->get();
-        
+
+        $isFollowing = Auth::user()->isFollowing($user);
+
         return Inertia::render('Profile/Account', [
             'user' => $user,
             'posts' => $posts,
+            'isFollowing' => $isFollowing,
         ]);
     }
 
     public function avatarAttachment(string $fileName)
     {
         return response()->file(
-            Storage::disk('public')->path("UserAvatar/$fileName")
+            Storage::disk('public')->path("UserAvatar/$fileName.webp")
         );
     }
 
     public function bannerAttachment(string $fileName)
     {
         return response()->file(
-            Storage::disk('public')->path("UserBanner/$fileName")
+            Storage::disk('public')->path("UserBanner/$fileName.webp")
         );
     }
 }
