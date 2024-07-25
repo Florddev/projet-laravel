@@ -72,11 +72,11 @@ export default function App({ current_page, children }) {
                                 <MessageSquareText className="h-4 w-4" />
                                 { __('messages') }
                             </Link>
-                            <Link href="#" className={navLinksClass(current_page === 'profile')}>
+                            <Link href={`/profile/${auth.user.tag}`} className={navLinksClass(current_page === 'profile')}>
                                 <User className="h-4 w-4" />
                                 { __('profile') }
                             </Link>
-                            <Link href="#" className={navLinksClass(current_page === 'settings')}>
+                            <Link href="/settings" className={navLinksClass(current_page === 'settings')}>
                                 <Settings className="h-4 w-4" />
                                 { __('settings') }
                             </Link>
@@ -104,7 +104,7 @@ export default function App({ current_page, children }) {
                             </Avatar>
                             <div className="grid gap-1">
                                 <p className="text-sm font-medium leading-none">{ auth.user.name }</p>
-                                <p className="text-sm text-muted-foreground">{ auth.user.email }</p>
+                                <p className="text-sm text-muted-foreground">@{ auth.user.tag }</p>
                             </div>
                         </div>
                     </div>
@@ -248,13 +248,13 @@ export default function App({ current_page, children }) {
                                 <DropdownMenuLabel>{ __('my_account') }</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem asChild>
-                                    <Link href={route('profile.edit')} method="get" className="w-full cursor-pointer">
+                                    <Link href={route('profile.show', { tag: auth.user.tag })} method="get" className="w-full cursor-pointer">
                                         <UserRound className="mr-2 h-4 w-4" />
                                         { __('my_profile') }
                                     </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem asChild>
-                                    <Link href={route('profile.edit')} method="post" className="w-full cursor-pointer">
+                                    <Link href={route('profile.edit')} method="get" className="w-full cursor-pointer">
                                         <Settings2 className="mr-2 h-4 w-4" />
                                         { __('edit_account') }
                                     </Link>

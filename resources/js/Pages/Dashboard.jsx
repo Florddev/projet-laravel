@@ -167,7 +167,7 @@ export default function Dashboard({ auth, posts, locale }) {
                                     <div className="grid w-full">
                                         <p className="flex align-middle gap-2 font-bold leading-none">
                                             { post.createur.name }
-                                            <span className="text-sm font-medium text-muted-foreground">{ post.createur.email }</span>
+                                            <span className="text-sm font-medium text-muted-foreground">@{ post.createur.tag }</span>
                                         </p>
                                         <p className="w-full">{ post.content }</p>
 

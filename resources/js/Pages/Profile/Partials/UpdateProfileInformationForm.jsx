@@ -13,19 +13,58 @@ import {
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
 import { Button } from "@/Components/ui/button";
+import { Textarea } from "@/Components/ui/textarea";
 
 export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }) {
     const user = usePage().props.auth.user;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
+    const { data, setData, patch, post, errors, processing, recentlySuccessful } = useForm({
         name: user.name,
+        tag: user.tag,
         email: user.email,
+        avatar: null,
+        banner: null,
     });
+
+    const handleAvatarChange = (e) => {
+        const file = e.target.files[0];
+        setData('avatar', file);
+    };
+
+    const handleBannerChange = (e) => {
+        const file = e.target.files[0];
+        setData('banner', file);
+    };
 
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route('profile.update'));
+        const formData = new FormData();
+        formData.append('name', data.name);
+        formData.append('tag', data.tag);
+        formData.append('email', data.email);
+        formData.append('bio', data.bio);
+
+        if (data.avatar) {
+            formData.append('avatar', data.avatar);
+        }
+
+        if (data.banner) {
+            formData.append('banner', data.banner);
+        }
+
+        post(route('profile.update'), {
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            onSuccess: () => {
+                console.log('Profile updated successfully');
+            },
+            onError: (error) => {
+                console.error('Error updating profile:', error);
+            }
+        });
     };
 
     return (
@@ -48,10 +87,37 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                             onChange={(e) => setData('name', e.target.value)}
                             required
                             isFocused
-                            autoComplete="name"
                         />
 
                         <InputError className="mt-2" message={errors.name} />
+                    </div>
+
+                    <div>
+                        <Label htmlFor="bio">Bio</Label>
+
+                        <Textarea
+                            id="bio"
+                            className="mt-1 block w-full"
+                            value={data.bio}
+                            onChange={(e) => setData('bio', e.target.value)}
+                            isFocused
+                        />
+
+                        <InputError className="mt-2" message={errors.bio} />
+                    </div>
+
+                    <div>
+                        <Label htmlFor="tag">Tag</Label>
+
+                        <Input
+                            id="tag"
+                            className="mt-1 block w-full"
+                            value={data.tag}
+                            onChange={(e) => setData('tag', e.target.value)}
+                            required
+                        />
+
+                        <InputError className="mt-2" message={errors.tag} />
                     </div>
 
                     <div>
@@ -64,10 +130,35 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                             value={data.email}
                             onChange={(e) => setData('email', e.target.value)}
                             required
-                            autoComplete="username"
                         />
 
                         <InputError className="mt-2" message={errors.email} />
+                    </div>
+
+                    <div>
+                        <Label htmlFor="banner">Banner</Label>
+
+                        <Input
+                            id="banner"
+                            type="file"
+                            className="mt-1 block w-full"
+                            onChange={handleBannerChange}
+                        />
+
+                        <InputError className="mt-2" message={errors.banner} />
+                    </div>
+
+                    <div>
+                        <Label htmlFor="avatar">Avatar</Label>
+
+                        <Input
+                            id="avatar"
+                            type="file"
+                            className="mt-1 block w-full"
+                            onChange={handleAvatarChange}
+                        />
+
+                        <InputError className="mt-2" message={errors.avatar} />
                     </div>
 
                     {mustVerifyEmail && user.email_verified_at === null && (

@@ -20,6 +20,7 @@ import forms from "@tailwindcss/forms";
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
+        tag: '',
         email: '',
         password: '',
         password_confirmation: '',
@@ -153,7 +154,16 @@ export default function Register() {
                                 </div>
                                 <div className="grid gap-2">
                                     <Label htmlFor="last-name">Tag</Label>
-                                    <Input id="Tag" placeholder="@robinson" required />
+                                    <Input 
+                                        id="tag" 
+                                        name="tag"
+                                        value={data.tag}
+                                        className="mt-1 block w-full"
+                                        autoComplete="tag"
+                                        onChange={(e) => setData('tag', e.target.value)}
+                                        placeholder="@robinson" 
+                                        required 
+                                    />
                                 </div>
                             </div>
                             <div className="grid gap-2">
