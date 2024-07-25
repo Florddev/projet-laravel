@@ -40,6 +40,10 @@ class ProfileController extends Controller
             $user->bio = $request->bio;
         }
 
+        if ($request->has('tag')) {
+            $user->tag = $request->tag;
+        }
+
         if ($request->hasFile('banner')) {
             $file = $request->file('banner');
             $file->storeAs('UserBanner', "userBanner-{$user->id}.webp", 'public');
