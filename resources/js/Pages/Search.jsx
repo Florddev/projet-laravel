@@ -73,14 +73,14 @@ export default function SearchPage({ postResults = [], userResults = [], search 
                         {userResults.map((user, index) => (
                             <div key={index} className="flex flex-1 justify-between gap-3 border rounded-lg roude p-4">
                                 <Avatar className="hidden h-10 w-10 sm:flex">
-                                    <AvatarImage src="/avatars/03.png" alt="Avatar" />
+                                    <AvatarImage src={`/user/avatar/userAvatar-${ user.id }.webp`} alt={ user.name } />
                                     <AvatarFallback>{user.name.split(' ').map(word => word[0].toUpperCase()).join('')}</AvatarFallback>
                                 </Avatar>
                                 <div className="flex flex-col w-full">
                                     <div className="grid w-full">
                                         <p className="flex align-middle gap-2 font-bold leading-none">
                                             {user.name}
-                                            <span className="text-sm font-medium text-muted-foreground">{user.email}</span>
+                                            <span className="text-sm font-medium text-muted-foreground">@{user.tag}</span>
                                         </p>
                                         <p className="w-full">Bio de l'utilisateur</p>
                                     </div>
@@ -96,14 +96,14 @@ export default function SearchPage({ postResults = [], userResults = [], search 
                         {postResults.map((post, index) => (
                             <div key={index} className="flex flex-1 justify-between gap-3 border rounded-lg roude p-4">
                                 <Avatar className="hidden h-10 w-10 sm:flex">
-                                    <AvatarImage src="/avatars/03.png" alt="Avatar" />
+                                    <AvatarImage src={`/user/avatar/userAvatar-${ post.createur.id }.webp`} alt={ post.createur.name } />
                                     <AvatarFallback>{post.createur.name.split(' ').map(word => word[0].toUpperCase()).join('')}</AvatarFallback>
                                 </Avatar>
                                 <div className="flex flex-col w-full">
                                     <div className="grid w-full">
                                         <p className="flex align-middle gap-2 font-bold leading-none">
                                             {post.createur.name}
-                                            <span className="text-sm font-medium text-muted-foreground">{post.createur.email}</span>
+                                            <span className="text-sm font-medium text-muted-foreground">@{post.createur.tag}</span>
                                         </p>
                                         <p className="w-full">{post.content}</p>
 

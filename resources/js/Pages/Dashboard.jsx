@@ -1,20 +1,7 @@
 import { useState } from 'react';
 import AppLayout from '@/Layouts/AppLayout';
-import {Link, useForm} from '@inertiajs/react'
-import {
-    Bell,
-    CircleUser,
-    Home,
-    LineChart,
-    Menu, MessageCircle, MessageSquareText,
-    Package,
-    Package2,
-    Search, Settings,
-    ShoppingCart, User,
-    Users,
-} from "lucide-react"
-
-import { CornerDownLeft, Mic, Paperclip } from "lucide-react"
+import {useForm} from '@inertiajs/react'
+import { CornerDownLeft, Paperclip } from "lucide-react"
 
 import { Label } from "@/Components/ui/label.tsx"
 import { Textarea } from "@/Components/ui/textarea.tsx"
@@ -25,30 +12,17 @@ import {
     TooltipProvider,
 } from "@/Components/ui/tooltip.tsx"
 
-import { Badge } from "@/Components/ui/badge.tsx"
 import { Button } from "@/Components/ui/button.tsx"
 import {
     Card,
     CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
 } from "@/Components/ui/card.tsx"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/Components/ui/dropdown-menu.tsx"
 import { Input } from "@/Components/ui/input.tsx"
-import { Sheet, SheetContent, SheetTrigger } from "@/Components/ui/sheet.tsx"
 import {Avatar, AvatarFallback, AvatarImage} from "@/Components/ui/avatar.tsx";
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/Components/ui/carousel.tsx";
 import { useToast } from "@/Components/ui/use-toast.ts"
 import InputError from "@/Components/InputError.jsx";
-import __, { changeLanguage } from "@/Components/translate.jsx";
+import __ from "@/Components/translate.jsx";
 
 export default function Dashboard({ auth, posts, locale }) {
     const { showToast, ToastContainer } = useToast();
@@ -160,7 +134,7 @@ export default function Dashboard({ auth, posts, locale }) {
                         {posts.map((post, index) => (
                             <div className="flex flex-1 justify-between gap-3 border rounded-lg roude p-4">
                                 <Avatar className="hidden h-10 w-10 sm:flex">
-                                    <AvatarImage src="/avatars/03.png" alt="Avatar" />
+                                    <AvatarImage src={`/user/avatar/userAvatar-${ auth.user.id }.webp`} alt={ auth.user.name } />
                                     <AvatarFallback>{ post.createur.name.split(' ').map(word => word[0].toUpperCase()).join('') }</AvatarFallback>
                                 </Avatar>
                                 <div className="flex flex-col w-full">

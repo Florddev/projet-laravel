@@ -3,12 +3,15 @@ import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import AccountSidebar from '@/Components/AccountSidebar';
 import { Avatar, AvatarImage, AvatarFallback } from '@/Components/ui/avatar';
+import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/Components/ui/carousel";
+import {Card, CardContent} from "@/Components/ui/card";
+import {Separator} from "@radix-ui/react-dropdown-menu";
 
 export default function Account({ auth, user, posts }) {
     const [bannerLoaded, setBannerLoaded] = useState(true);
 
     return (
-        <AppLayout auth={auth}>
+        <AppLayout current_page="profile">
             <Head title="Profile" />
             <div className="bg-black text-white min-h-screen">
                 <div className="max-w-7xl mx-auto">
@@ -17,17 +20,17 @@ export default function Account({ auth, user, posts }) {
                             <header className="relative mb-16">
                                 <div className={`w-full h-48 ${bannerLoaded ? '' : 'bg-[#333639]'}`}>
                                     {bannerLoaded && (
-                                        <img 
+                                        <img
                                             src={`/user/banner/userBanner-${ user.id }.webp`}
                                             alt="Banner"
                                             className="w-full h-48 object-cover"
-                                            onError={() => setBannerLoaded(false)}        
+                                            onError={() => setBannerLoaded(false)}
                                         />
                                     )}
                                 </div>
                                 <div className="absolute -bottom-16 left-4">
                                     <Avatar className="w-32 h-32 rounded-full border-4 border-black">
-                                        <AvatarImage src={`/user/avatar/userAvatar-${ user.id }.webp`} alt="Avatar" />
+                                        <AvatarImage src={`/user/avatar/userAvatar-${ user.id }.webp`} alt={ user.name } />
                                         <AvatarFallback>{ user.name.split(' ').map(word => word[0].toUpperCase()).join('') }</AvatarFallback>
                                     </Avatar>
                                     {/* <img src={`/user/avatar/userAvatar-${ user.id }.webp`} alt={user.name} className="w-32 h-32 rounded-full border-4 border-black" /> */}
@@ -57,18 +60,10 @@ export default function Account({ auth, user, posts }) {
                                     <span><strong>400</strong> abonnés</span>
                                 </div>
                             </main>
-                            <nav className="mt-8">
-                                <ul className="flex">
-                                    {['Posts', 'Réponses', 'Médias', 'J\'aime'].map((item) => (
-                                        <li key={item} className="px-4 py-2 hover:bg-gray-900 cursor-pointer transition">
-                                            {item}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </nav>
-                            <div>
+
+                            <div className="flex flex-col gap-4 p-4 pt-12">
                                 {posts.map((post, index) => (
-                                    <div className="flex flex-1 justify-between gap-3 border p-4">
+                                    <div className="flex flex-1 justify-between gap-3 border p-4 rounded-md">
                                         <Avatar className="hidden h-10 w-10 sm:flex">
                                             <AvatarImage src="/avatars/03.png" alt="Avatar" />
                                             <AvatarFallback>{ post.createur.name.split(' ').map(word => word[0].toUpperCase()).join('') }</AvatarFallback>
