@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
+use Inertia\Inertia;
 
 class PostController extends Controller
 {
@@ -41,6 +42,15 @@ class PostController extends Controller
         return response()->file(
             Storage::disk('public')->path("PostsAttachements/$fileName")
         );
+    }
+
+    public function show($id)
+    {
+        $post = Post::with('createur')->with('replies.user')->findOrFail($id);
+
+        return Inertia::render('Posts/Show', [
+            'post' => $post,
+        ]);
     }
 
 }
