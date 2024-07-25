@@ -3,6 +3,7 @@
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\MessageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 /*
@@ -59,7 +60,14 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/posts/attachement/{fileName}', [PostController::class, 'attachement'])->name('posts.attachement');
 
-    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chats', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chats/{id}', [ChatController::class, 'show'])->name('chat.show');
+    Route::post('/chats', [ChatController::class, 'store'])->name('chat.store');
+    Route::delete('/chats/{id}', [ChatController::class, 'destroy'])->name('chat.destroy');
+
+    Route::post('/chats/{chatId}/messages', [MessageController::class, 'store'])->name('message.store');
+    Route::put('/messages/{id}', [MessageController::class, 'update'])->name('message.update');
+    Route::delete('/messages/{id}', [MessageController::class, 'destroy'])->name('message.destroy');
 
     Route::resources([
         'posts' => PostController::class,

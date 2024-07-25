@@ -25,7 +25,7 @@ return [
 
     'type_message' => 'Type your message here...',
     'send_message' => 'Send Message',
-    'attach_file' => 'Attach file :name',
+    'attach_file' => 'Attach file',
 
     'news' => 'News',
     'posts' => 'Posts',
