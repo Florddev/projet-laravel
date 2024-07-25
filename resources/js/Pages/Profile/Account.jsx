@@ -16,7 +16,6 @@ export default function Account({ auth, user, posts, isFollowing }) {
         post(route('profile.follow', user.tag), {
             onSuccess: () => {
                 setFollowing(true);
-                console.log(following);
             }
         });
     };
@@ -82,7 +81,7 @@ export default function Account({ auth, user, posts, isFollowing }) {
                                     )}
                                 </div>
                                 <p className="text-gray-400">@{user.tag}</p>
-                                <p className="my-4">User bio</p>
+                                <p className="my-4">{user.bio}</p>
                                 <div className="flex flex-wrap items-center gap-4 text-gray-400 text-sm">
                                     <span className="flex items-center"><span className="mr-1">📍</span>User location</span>
                                     <span className="flex items-center"><span className="mr-1">🌐</span>User website</span>

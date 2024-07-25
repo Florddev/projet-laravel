@@ -36,6 +36,10 @@ class ProfileController extends Controller
 
         $request->user()->fill($request->validated());
 
+        if ($request->has('bio')) {
+            $user->bio = $request->bio;
+        }
+
         if ($request->hasFile('banner')) {
             $file = $request->file('banner');
             $file->storeAs('UserBanner', "userBanner-{$user->id}.webp", 'public');
