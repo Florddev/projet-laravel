@@ -33,7 +33,6 @@ export default function App({ current_page, children }) {
     const auth = usePage().props.auth;
 
     const navLinksClass = (active = false) => {
-        console.log(current_page, active);
         return `flex items-center gap-3 rounded-lg px-3 py-2 ` + (active ? `bg-muted transition-all text-primary` : `text-muted-foreground transition-all`) + ` hover:text-primary`;
     }
 

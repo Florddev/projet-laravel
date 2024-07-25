@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use function PHPUnit\Framework\isNull;
 
 class MainController extends Controller
 {
@@ -34,9 +35,10 @@ class MainController extends Controller
         return Inertia::render('Explore');
     }
 
-    public function search(string $search)
+    public function search(Request $request, ?string $search = '')
     {
-        // Séparer la phrase en mots
+        $search = $search ?: $request->input('search', '');
+
         $searchWords = explode(' ', $search);
 
         $postQuery = Post::where('content', 'LIKE', '%' . $search . '%');
@@ -49,10 +51,17 @@ class MainController extends Controller
         $search_post_results = $postQuery->orderBy('created_at')->with('createur')->get();
         $search_user_results = $userQuery->get();
 
+        if ($request->wantsJson()) {
+            return response()->json([
+                'post_result' => $search_post_results,
+                'user_result' => $search_user_results,
+            ]);
+        }
+
         return Inertia::render('Search', [
             'search' => $search,
-            'post_result' => $search_post_results ?? [],
-            'user_result' => $search_user_results ?? []
+            'postResults' => $search_post_results ?? [],
+            'userResults' => $search_user_results ?? []
         ]);
     }
 

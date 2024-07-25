@@ -10,7 +10,7 @@ return [
     'profile' => 'Profile',
     'settings' => 'Settings',
 
-    'search' => 'Search...',
+    'search' => 'Search',
     'change_language' => 'Change language',
     'english' => 'English',
     'french' => 'French',
