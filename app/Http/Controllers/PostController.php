@@ -50,6 +50,7 @@ class PostController extends Controller
 
         return Inertia::render('Posts/Show', [
             'post' => $post,
+            'last_followers' => MainController::getAuthUserLastFollers()
         ]);
     }
 

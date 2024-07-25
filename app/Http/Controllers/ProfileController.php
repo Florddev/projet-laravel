@@ -99,6 +99,7 @@ class ProfileController extends Controller
             'user' => $user,
             'posts' => $posts,
             'isFollowing' => $isFollowing,
+            'last_followers' => MainController::getAuthUserLastFollers()
         ]);
     }
 

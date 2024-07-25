@@ -13,6 +13,16 @@ use function PHPUnit\Framework\isNull;
 
 class MainController extends Controller
 {
+
+    public static function getAuthUserLastFollers(){
+        return  Follow::where('user_followed_id', '=', Auth::id())
+                ->with('user')
+                ->with('followed_user')
+                ->orderBy('created_at')
+                ->take(5)
+                ->get();
+    }
+
     public function home()
     {
         $users_followed = Follow::where('user_id', Auth::id())->get();
@@ -27,6 +37,7 @@ class MainController extends Controller
 
         return Inertia::render('Dashboard', [
             'posts' => $sorted_posts,
+            'last_followers' => self::getAuthUserLastFollers()
         ]);
     }
 
@@ -45,7 +56,7 @@ class MainController extends Controller
         $userQuery = User::where('name', 'LIKE', '%' . $search . '%');
         foreach ($searchWords as $word) {
             $postQuery->orWhere('content', 'LIKE', '%' . $word . '%');
-            $userQuery->orWhere('name', 'LIKE', '%' . $word . '%');
+            $userQuery->orWhere('name', 'LIKE', '%' . $word . '%')->orWhere('bio', 'LIKE', '%' . $word . '%');
         }
 
         $search_post_results = $postQuery->orderBy('created_at')->with('createur')->get();
@@ -61,7 +72,8 @@ class MainController extends Controller
         return Inertia::render('Search', [
             'search' => $search,
             'postResults' => $search_post_results ?? [],
-            'userResults' => $search_user_results ?? []
+            'userResults' => $search_user_results ?? [],
+            'last_followers' => self::getAuthUserLastFollers()
         ]);
     }
 
