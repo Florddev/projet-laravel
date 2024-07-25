@@ -30,9 +30,9 @@ export default function SearchPage({ post_result, user_result, search }) {
                         </div>
                     </div>
 
-                    {user_result.length === 0 ?? (
+                    {user_result.length > 0 ? (
                         <h1 className="text-lg font-semibold md:text-2xl my-4">{ __('users') }</h1>
-                    )}
+                    ) : null}
                     <div className="flex flex-col gap-4">
                         {user_result.map((user, index) => (
                             <div className="flex flex-1 justify-between gap-3 border rounded-lg roude p-4">
@@ -53,9 +53,9 @@ export default function SearchPage({ post_result, user_result, search }) {
                         ))}
                     </div>
 
-                    {post_result.length > 0 ?? (
-                        <h1 className="text-lg font-semibold md:text-2xl my-4">{ __('users') }</h1>
-                    )}
+                    {post_result.length > 0 ? (
+                        <h1 className="text-lg font-semibold md:text-2xl my-4">{ __('posts') }</h1>
+                    ) : null}
                     <div className="flex flex-col gap-4">
                         {post_result.map((post, index) => (
                             <div className="flex flex-1 justify-between gap-3 border rounded-lg roude p-4">
@@ -99,6 +99,12 @@ export default function SearchPage({ post_result, user_result, search }) {
                             </div>
                         ))}
                     </div>
+                    {(
+                        post_result.length === 0
+                        && user_result.length === 0
+                    ) ? (
+                        <p className="text-sm text-muted-foreground">Aucun post ni compte correspondant à la recherche "{ search }" n'a été trouvé...</p>
+                    ) : null}
                 </div>
                 <div className="hidden sticky top-0 max-h-screen flex-1 items-center justify-center border-l p-6 md:flex md:min-w-60 lg:min-w-80 2xl:min-w-96">
                     <div className="flex flex-col items-center gap-1 text-center">

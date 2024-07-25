@@ -50,7 +50,7 @@ class MainController extends Controller
         $search_user_results = $userQuery->get();
 
         return Inertia::render('Search', [
-            'search' => 'search',
+            'search' => $search,
             'post_result' => $search_post_results ?? [],
             'user_result' => $search_user_results ?? []
         ]);
