@@ -42,9 +42,9 @@ Route::get('/dashboard', function () {
 */
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/settings', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/settings', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/settings', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/dashboard', [MainController::class, 'home'])->name('dashboard');
     Route::get('/explore', [MainController::class, 'explore'])->name('main.explore');
@@ -56,6 +56,10 @@ Route::middleware('auth')->group(function () {
     ]);
 
     Route::get('/profile/{tag}', [ProfileController::class, 'show'])->name('profile.show');
+
+    Route::get('/user/avatar/{fileName}', [ProfileController::class, 'avatarAttachment'])->name('user.avatar.attachment');
+    Route::get('/user/banner/{fileName}', [ProfileController::class, 'bannerAttachment'])->name('user.banner.attachment');
+
 });
 
 require __DIR__.'/auth.php';

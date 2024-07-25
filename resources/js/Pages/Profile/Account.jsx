@@ -1,10 +1,12 @@
-import React from 'react';
-import { Head } from '@inertiajs/react';
+import React, { useState } from 'react';
+import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import AccountSidebar from '@/Components/AccountSidebar';
 import { Avatar, AvatarImage, AvatarFallback } from '@/Components/ui/avatar';
 
 export default function Account({ auth, user, posts }) {
+    const [bannerLoaded, setBannerLoaded] = useState(true);
+
     return (
         <AppLayout auth={auth}>
             <Head title="Profile" />
@@ -13,26 +15,42 @@ export default function Account({ auth, user, posts }) {
                     <div className="flex flex-col md:flex-row">
                         <div className="flex-grow max-w-4xl">
                             <header className="relative mb-16">
-                                <img src="https://lareclame.fr/wp-content/uploads/2024/05/psg-top.jpg" alt="Cover" className="w-full h-48 object-cover" />
+                                <div className={`w-full h-48 ${bannerLoaded ? '' : 'bg-[#333639]'}`}>
+                                    {bannerLoaded && (
+                                        <img 
+                                            src={`/user/banner/userBanner-${ user.id }.webp`}
+                                            alt="Banner"
+                                            className="w-full h-48 object-cover"
+                                            onError={() => setBannerLoaded(false)}        
+                                        />
+                                    )}
+                                </div>
                                 <div className="absolute -bottom-16 left-4">
-                                    <img src="https://pbs.twimg.com/profile_images/1766432919273234432/8ST546w0_400x400.png" alt={auth.user.name} className="w-32 h-32 rounded-full border-4 border-black" />
+                                    <Avatar className="w-32 h-32 rounded-full border-4 border-black">
+                                        <AvatarImage src={`/user/avatar/userAvatar-${ user.id }.webp`} alt="Avatar" />
+                                        <AvatarFallback>{ user.name.split(' ').map(word => word[0].toUpperCase()).join('') }</AvatarFallback>
+                                    </Avatar>
+                                    {/* <img src={`/user/avatar/userAvatar-${ user.id }.webp`} alt={user.name} className="w-32 h-32 rounded-full border-4 border-black" /> */}
                                 </div>
                             </header>
                             <main className="mt-20 px-5">
                                 <div className="flex justify-between items-center mb-4">
-                                    <h1 className="text-2xl font-bold">{auth.user.name}</h1>
+                                    <h1 className="text-2xl font-bold">{user.name}</h1>
                                     { auth.user.tag === user.tag ? (
-                                        <button className="bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200 transition">Modifier le profil</button>
+                                        <Link href="/settings" className="bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200 transition">
+                                            Modifier le profil
+                                        </Link>
+                                        // <button className="bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200 transition">Modifier le profil</button>
                                     ) : (
                                         <button className="bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200 transition">Suivre</button>
                                     ) }
                                 </div>
-                                <p className="text-gray-400">@{auth.user.tag}</p>
+                                <p className="text-gray-400">@{user.tag}</p>
                                 <p className="my-4">User bio</p>
                                 <div className="flex flex-wrap items-center gap-4 text-gray-400 text-sm">
                                     <span className="flex items-center"><span className="mr-1">📍</span>User location</span>
                                     <span className="flex items-center"><span className="mr-1">🌐</span>User website</span>
-                                    <span className="flex items-center"><span className="mr-1">🗓</span>Inscrit en {new Date(auth.user.created_at).toLocaleDateString()}</span>
+                                    <span className="flex items-center"><span className="mr-1">🗓</span>Inscrit en {new Date(user.created_at).toLocaleDateString()}</span>
                                 </div>
                                 <div className="flex items-center gap-4 mt-4 text-sm">
                                     <span><strong>40</strong> abonnements</span>

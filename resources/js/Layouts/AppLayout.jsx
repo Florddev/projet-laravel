@@ -68,11 +68,11 @@ export default function App({ children }) {
                                 <MessageSquareText className="h-4 w-4" />
                                 { __('messages') }
                             </Link>
-                            <Link href="#" className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                            <Link href={`/profile/${auth.user.tag}`} className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
                                 <User className="h-4 w-4" />
                                 { __('profile') }
                             </Link>
-                            <Link href="#" className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                            <Link href="/settings" className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
                                 <Settings className="h-4 w-4" />
                                 { __('settings') }
                             </Link>
@@ -244,13 +244,13 @@ export default function App({ children }) {
                                 <DropdownMenuLabel>{ __('my_account') }</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem asChild>
-                                    <Link href={route('profile.edit')} method="get" className="w-full cursor-pointer">
+                                    <Link href={route('profile.show', { tag: auth.user.tag })} method="get" className="w-full cursor-pointer">
                                         <UserRound className="mr-2 h-4 w-4" />
                                         { __('my_profile') }
                                     </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem asChild>
-                                    <Link href={route('profile.edit')} method="post" className="w-full cursor-pointer">
+                                    <Link href={route('profile.edit')} method="get" className="w-full cursor-pointer">
                                         <Settings2 className="mr-2 h-4 w-4" />
                                         { __('edit_account') }
                                     </Link>
