@@ -7,7 +7,7 @@ import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious}
 import {Card, CardContent} from "@/Components/ui/card";
 import {Separator} from "@radix-ui/react-dropdown-menu";
 import { Button } from "@/Components/ui/button";
-import { MessageSquare } from "lucide-react";
+import {MessageSquare, Settings, Trash} from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/Components/ui/dialog";
 import { Textarea } from "@/Components/ui/textarea.tsx";
 import InputError from "@/Components/InputError.jsx";
@@ -15,12 +15,19 @@ import __ from "@/Components/translate.jsx";
 
 export default function Account({ auth, user, posts, isFollowing, last_followers }) {
     const { post } = useForm();
+
     const { data: replyData, setData: setReplyData, post: createReply, processing: replyProcessing, errors: replyErrors, reset: resetReplyForm } = useForm({
         replyContent: '',
     });
+
+    const { data: deleteData, setData: setdeleteData, delete: deletePost, reset: resetDeleteForm } = useForm({
+        postId: '',
+    });
+
     const [bannerLoaded, setBannerLoaded] = useState(true);
     const [following, setFollowing] = useState(isFollowing);
     const [showReplyModal, setShowReplyModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [currentPostId, setCurrentPostId] = useState(null);
 
     const handleFollow = () => {
@@ -57,9 +64,22 @@ export default function Account({ auth, user, posts, isFollowing, last_followers
         });
     };
 
+    const submitDelete = (e) => {
+        e.preventDefault();
+
+        setdeleteData({ postId: currentPostId });
+        deletePost(route('posts.destroy', currentPostId));
+        setShowDeleteModal(false);
+    };
+
     const openReplyModal = (postId) => {
         setCurrentPostId(postId);
         setShowReplyModal(true);
+    };
+
+    const openDeleteModal = (postId) => {
+        setCurrentPostId(postId);
+        setShowDeleteModal(true);
     };
 
     return (
@@ -136,9 +156,16 @@ export default function Account({ auth, user, posts, isFollowing, last_followers
                                             </Link>
                                             <div className="flex flex-col w-full">
                                                 <div className="grid w-full">
-                                                    <Link href={`/profile/${post.createur.tag}`} className="flex align-middle gap-2 font-bold leading-none hover:underline">
-                                                        {post.createur.name}
-                                                        <span className="text-sm font-medium text-muted-foreground">@{post.createur.tag}</span>
+                                                    <Link href={`/profile/${post.createur.tag}`} className="flex relative align-middle justify-between gap-2 font-bold leading-none hover:underline">
+                                                        <div className="flex gap-2">
+                                                            {post.createur.name}
+                                                            <span className="text-sm font-medium text-muted-foreground">@{post.createur.tag}</span>
+                                                        </div>
+                                                        {auth.user.id === post.createur.id ? (
+                                                            <Button variant="ghost" size="icon" className="absolute top-0 right-0" onClick={(e) =>  { e.preventDefault(); openDeleteModal(post.id) }}>
+                                                                <Trash className="size-4" />
+                                                            </Button>
+                                                        ) : null}
                                                     </Link>
                                                     <p className="w-full">{ post.content }</p>
 
@@ -198,6 +225,26 @@ export default function Account({ auth, user, posts, isFollowing, last_followers
                             Reply
                         </Button>
                         <InputError message={replyErrors.replyContent} />
+                    </form>
+                </DialogContent>
+            </Dialog>
+
+            <Dialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Suppression du post</DialogTitle>
+                        <DialogClose />
+                        <p className="text-sm text-muted-foreground">Etes-vous certains de vouloir suprimmer ce post ?</p>
+                    </DialogHeader>
+                    <form onSubmit={submitDelete} className="flex justify-end gap-2">
+                        <DialogClose asChild>
+                            <Button type="button" variant="outline" size="sm" className="mt-2">
+                                Annuler
+                            </Button>
+                        </DialogClose>
+                        <Button type="submit" variant="destructive" size="sm" className="mt-2">
+                            Supprimer
+                        </Button>
                     </form>
                 </DialogContent>
             </Dialog>

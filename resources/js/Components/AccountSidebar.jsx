@@ -23,7 +23,7 @@ export default function AccountSidebar({ data }) {
                                     {follow.user.name}
                                     <span className="text-sm font-medium text-muted-foreground">@{ follow.user.tag }</span>
                                 </Link>
-                                <p className="w-full">{ follow.user.bio ?? '...' }</p>
+                                <p className="w-full">{ follow.user.bio ?? __('new_user_message') }</p>
                             </div>
                         </div>
                     </div>
