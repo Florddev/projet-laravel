@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\FollowerController;
+use App\Http\Controllers\ReplyController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -58,6 +59,9 @@ Route::middleware('auth')->group(function () {
     Route::resources([
         'posts' => PostController::class,
     ]);
+
+    Route::post('/posts/{post}/replies', [ReplyController::class, 'store'])->name('replies.store');
+    Route::get('/posts/{id}/', [ReplyController::class, 'show'])->name('posts.show');
 
     Route::get('/profile/{tag}', [ProfileController::class, 'show'])->name('profile.show');
     Route::post('/profile/{tag}/follow', [FollowerController::class, 'follow'])->name('profile.follow');

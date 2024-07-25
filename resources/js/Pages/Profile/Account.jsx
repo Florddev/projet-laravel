@@ -6,11 +6,21 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/Components/ui/avatar';
 import {Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious} from "@/Components/ui/carousel";
 import {Card, CardContent} from "@/Components/ui/card";
 import {Separator} from "@radix-ui/react-dropdown-menu";
+import { Button } from "@/Components/ui/button";
+import { MessageSquare } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/Components/ui/dialog";
+import { Textarea } from "@/Components/ui/textarea.tsx";
+import InputError from "@/Components/InputError.jsx";
 
 export default function Account({ auth, user, posts, isFollowing }) {
     const { post } = useForm();
+    const { data: replyData, setData: setReplyData, post: createReply, processing: replyProcessing, errors: replyErrors, reset: resetReplyForm } = useForm({
+        replyContent: '',
+    });
     const [bannerLoaded, setBannerLoaded] = useState(true);
     const [following, setFollowing] = useState(isFollowing);
+    const [showReplyModal, setShowReplyModal] = useState(false);
+    const [currentPostId, setCurrentPostId] = useState(null);
 
     const handleFollow = () => {
         post(route('profile.follow', user.tag), {
@@ -28,6 +38,28 @@ export default function Account({ auth, user, posts, isFollowing }) {
         });
     };
 
+    const submitReply = (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('replyContent', replyData.replyContent);
+
+        createReply(route('replies.store', currentPostId), {
+            data: formData,
+            onSuccess: () => {
+                resetReplyForm('replyContent');
+                setShowReplyModal(false);
+            },
+            onError: (errors) => {
+                console.error(errors);
+            }
+        });
+    };
+
+    const openReplyModal = (postId) => {
+        setCurrentPostId(postId);
+        setShowReplyModal(true);
+    };
 
     return (
         <AppLayout current_page="profile">
@@ -56,7 +88,7 @@ export default function Account({ auth, user, posts, isFollowing }) {
                                 </div>
                             </header>
                             <main className="mt-20 px-5">
-                                <div className="flex justify-between items-center mb-4">
+                                <div className="flex justify-between items-center">
                                     <h1 className="text-2xl font-bold">{user.name}</h1>
                                     { auth.user.tag !== user.tag ? (
                                         following ? (
@@ -83,9 +115,7 @@ export default function Account({ auth, user, posts, isFollowing }) {
                                 <p className="text-gray-400">@{user.tag}</p>
                                 <p className="my-4">{user.bio}</p>
                                 <div className="flex flex-wrap items-center gap-4 text-gray-400 text-sm">
-                                    <span className="flex items-center"><span className="mr-1">📍</span>User location</span>
-                                    <span className="flex items-center"><span className="mr-1">🌐</span>User website</span>
-                                    <span className="flex items-center"><span className="mr-1">🗓</span>Inscrit en {new Date(user.created_at).toLocaleDateString()}</span>
+                                    <span className="flex items-center"><span className="mr-1">🗓</span>Inscrit depuis le {new Date(user.created_at).toLocaleDateString()}</span>
                                 </div>
                                 <div className="flex items-center gap-4 mt-4 text-sm">
                                     <span><strong>{user.followings_count}</strong> abonnements</span>
@@ -95,45 +125,50 @@ export default function Account({ auth, user, posts, isFollowing }) {
 
                             <div className="flex flex-col gap-4 p-4 pt-12">
                                 {posts.map((post, index) => (
-                                    <div className="flex flex-1 justify-between gap-3 border p-4 rounded-md">
-                                        <Avatar className="hidden h-10 w-10 sm:flex">
-                                            <AvatarImage src="/avatars/03.png" alt="Avatar" />
-                                            <AvatarFallback>{ post.createur.name.split(' ').map(word => word[0].toUpperCase()).join('') }</AvatarFallback>
-                                        </Avatar>
-                                        <div className="flex flex-col w-full">
-                                            <div className="grid w-full">
-                                                <p className="flex align-middle gap-2 font-bold leading-none">
-                                                    { post.createur.name }
-                                                    <span className="text-sm font-medium text-muted-foreground">@{ post.createur.tag }</span>
-                                                </p>
-                                                <p className="w-full">{ post.content }</p>
+                                    <Link href={route('posts.show', post.id)} className="flex flex-col gap-2">
+                                        <div className="flex flex-1 justify-between gap-3 border p-4 rounded-md">
+                                            <Avatar className="hidden h-10 w-10 sm:flex">
+                                                <AvatarImage src={`/user/avatar/userAvatar-${post.createur.id}.webp`} alt={post.createur.name} />
+                                                <AvatarFallback>{ post.createur.name.split(' ').map(word => word[0].toUpperCase()).join('') }</AvatarFallback>
+                                            </Avatar>
+                                            <div className="flex flex-col w-full">
+                                                <div className="grid w-full">
+                                                    <p className="flex align-middle gap-2 font-bold leading-none">
+                                                        { post.createur.name }
+                                                        <span className="text-sm font-medium text-muted-foreground">@{ post.createur.tag }</span>
+                                                    </p>
+                                                    <p className="w-full">{ post.content }</p>
 
-                                                { post.number_of_images > 0 ? (
-                                                    <div className="w-full pr-14 pt-2">
-                                                        <Carousel className="w-full">
-                                                            <CarouselContent className="-ml-1 w-full">
-                                                                {Array.from({ length: post.number_of_images }).map((_, index) => (
-                                                                    <CarouselItem key={index} className="pl-1 lg:basis-1/2">
-                                                                        <div className="p-1">
-                                                                            <Card className={`bg-cover bg-center`} style={{"background-image": `url("/posts/attachement/post-${ post.id }_${ index }.webp")`}}>
-                                                                                <CardContent className="flex aspect-square items-center justify-center p-6" />
-                                                                            </Card>
-                                                                        </div>
-                                                                    </CarouselItem>
-                                                                ))}
-                                                            </CarouselContent>
-                                                            { post.number_of_images > 2 ? (
-                                                                <div>
-                                                                    <CarouselPrevious />
-                                                                    <CarouselNext />
-                                                                </div>
-                                                            ): null }
-                                                        </Carousel>
-                                                    </div>
-                                                ): null }
+                                                    { post.number_of_images > 0 ? (
+                                                        <div className="w-full pr-14 pt-2">
+                                                            <Carousel className="w-full">
+                                                                <CarouselContent className="-ml-1 w-full">
+                                                                    {Array.from({ length: post.number_of_images }).map((_, index) => (
+                                                                        <CarouselItem key={index} className="pl-1 lg:basis-1/2">
+                                                                            <div className="p-1">
+                                                                                <Card className={`bg-cover bg-center`} style={{"background-image": `url("/posts/attachement/post-${ post.id }_${ index }.webp")`}}>
+                                                                                    <CardContent className="flex aspect-square items-center justify-center p-6" />
+                                                                                </Card>
+                                                                            </div>
+                                                                        </CarouselItem>
+                                                                    ))}
+                                                                </CarouselContent>
+                                                                { post.number_of_images > 2 ? (
+                                                                    <div>
+                                                                        <CarouselPrevious />
+                                                                        <CarouselNext />
+                                                                    </div>
+                                                                ): null }
+                                                            </Carousel>
+                                                        </div>
+                                                    ): null }
+                                                    <Button variant="ghost" size="icon" onClick={(e) =>  { e.preventDefault(); openReplyModal(post.id) }}>
+                                                        <MessageSquare className="size-4" />
+                                                    </Button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </Link>
                                 ))}
                             </div>
                         </div>
@@ -143,6 +178,28 @@ export default function Account({ auth, user, posts, isFollowing }) {
                     </div>
                 </div>
             </div>
+
+            <Dialog open={showReplyModal} onOpenChange={setShowReplyModal}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Reply to Post</DialogTitle>
+                        <DialogClose />
+                    </DialogHeader>
+                    <form onSubmit={submitReply}>
+                        <Textarea
+                            id="reply-content"
+                            value={replyData.replyContent}
+                            placeholder="Type your reply"
+                            className="min-h-12 resize-none border p-2 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                            onChange={(e) => setReplyData('replyContent', e.target.value)}
+                        />
+                        <Button type="submit" size="sm" className="mt-2">
+                            Reply
+                        </Button>
+                        <InputError message={replyErrors.replyContent} />
+                    </form>
+                </DialogContent>
+            </Dialog>
         </AppLayout>
     )
 }
