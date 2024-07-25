@@ -4,6 +4,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\FollowerController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -59,6 +60,8 @@ Route::middleware('auth')->group(function () {
     ]);
 
     Route::get('/profile/{tag}', [ProfileController::class, 'show'])->name('profile.show');
+    Route::post('/profile/{tag}/follow', [FollowerController::class, 'follow'])->name('profile.follow');
+    Route::post('/profile/{tag}/unfollow', [FollowerController::class, 'unfollow'])->name('profile.unfollow');
 
     Route::get('/user/avatar/{fileName}', [ProfileController::class, 'avatarAttachment'])->name('user.avatar.attachment');
     Route::get('/user/banner/{fileName}', [ProfileController::class, 'bannerAttachment'])->name('user.banner.attachment');
