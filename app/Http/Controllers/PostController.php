@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
@@ -52,6 +53,13 @@ class PostController extends Controller
             'post' => $post,
             'last_followers' => MainController::getAuthUserLastFollers()
         ]);
+    }
+
+    public function destroy($postId){
+        $post = Post::findOrFail($postId);
+        $post->delete();
+
+        return Redirect::route('profile.show', ['tag' => Auth::user()->tag]);
     }
 
 }

@@ -37,6 +37,7 @@ return [
     'register_since' => 'Register since',
     'followers' => 'followers',
     'followings' => 'followings',
-    'last_followers' => 'Last followers'
+    'last_followers' => 'Last followers',
+    'new_user_message' => "Hi, I'm new to OnlyFun!"
 
 ];
