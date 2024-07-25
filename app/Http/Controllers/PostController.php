@@ -40,7 +40,7 @@ class PostController extends Controller
     public function attachement(string $fileName)
     {
         return response()->file(
-            Storage::disk('public')->path("PostsAttachements/$fileName")
+            Storage::disk('public')->path("PostsAttachements/$fileName.webp")
         );
     }
 

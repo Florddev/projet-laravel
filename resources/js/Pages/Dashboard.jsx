@@ -17,12 +17,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@
 
 export default function Dashboard({ auth, posts, locale }) {
     const { showToast, ToastContainer } = useToast();
-    
+
     const { data: postData, setData: setPostData, post: createPost, processing: postProcessing, errors: postErrors, reset: resetPostForm } = useForm({
         content: '',
         images: null,
     });
-    
+
     const { data: replyData, setData: setReplyData, post: createReply, processing: replyProcessing, errors: replyErrors, reset: resetReplyForm } = useForm({
         replyContent: '',
     });
@@ -152,7 +152,7 @@ export default function Dashboard({ auth, posts, locale }) {
                             <Link href={route('posts.show', post.id)} className="flex flex-col gap-2">
                                 <div key={index} className="flex flex-1 justify-between gap-3 border rounded-lg p-4">
                                     <Avatar className="hidden h-10 w-10 sm:flex">
-                                        <AvatarImage src={`/user/avatar/userAvatar-${post.createur.id}.webp`} alt={post.createur.name} />
+                                        <AvatarImage src={`/user/avatar/userAvatar-${post.createur.id}`} alt={post.createur.name} />
                                         <AvatarFallback>{post.createur.name.split(' ').map(word => word[0].toUpperCase()).join('')}</AvatarFallback>
                                     </Avatar>
                                     <div className="flex flex-col w-full">
@@ -170,7 +170,7 @@ export default function Dashboard({ auth, posts, locale }) {
                                                             {Array.from({ length: post.number_of_images }).map((_, index) => (
                                                                 <CarouselItem key={index} className="pl-1 lg:basis-1/2">
                                                                     <div className="p-1">
-                                                                        <Card className={`bg-cover bg-center`} style={{ "background-image": `url("/posts/attachement/post-${post.id}_${index}.webp")` }}>
+                                                                        <Card className={`bg-cover bg-center`} style={{ "background-image": `url("/posts/attachement/post-${post.id}_${index}")` }}>
                                                                             <CardContent className="flex aspect-square items-center justify-center p-6" />
                                                                         </Card>
                                                                     </div>
@@ -209,7 +209,7 @@ export default function Dashboard({ auth, posts, locale }) {
                     </div>
                 </div>
             </main>
-            
+
             <Dialog open={showReplyModal} onOpenChange={setShowReplyModal}>
                 <DialogContent>
                     <DialogHeader>

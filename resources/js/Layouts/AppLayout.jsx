@@ -93,7 +93,7 @@ export default function App({ current_page, children }) {
                         {/*</Card>*/}
                         <div className="flex items-center gap-4">
                             <Avatar className="hidden h-9 w-9 sm:flex">
-                                <AvatarImage src={`/user/avatar/userAvatar-${ auth.user.id }.webp`} alt={ auth.user.name } />
+                                <AvatarImage src={`/user/avatar/userAvatar-${ auth.user.id }`} alt={ auth.user.name } />
                                 <AvatarFallback>{ auth.user.name.split(' ').map(word => word[0].toUpperCase()).join('') }</AvatarFallback>
                             </Avatar>
                             <div className="grid gap-1">
@@ -157,7 +157,7 @@ export default function App({ current_page, children }) {
                                 {/*</Card>*/}
                                 <div className="flex items-center gap-4">
                                     <Avatar className="hidden h-9 w-9 sm:flex">
-                                        <AvatarImage src={`/user/avatar/userAvatar-${ auth.user.id }.webp`} alt="Avatar" />
+                                        <AvatarImage src={`/user/avatar/userAvatar-${ auth.user.id }`} alt="Avatar" />
                                         <AvatarFallback>{ auth.user.name.split(' ').map(word => word[0].toUpperCase()).join('') }</AvatarFallback>
                                     </Avatar>
                                     <div className="grid gap-1">

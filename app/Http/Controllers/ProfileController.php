@@ -90,7 +90,7 @@ class ProfileController extends Controller
         $posts = Post::where('user_id', $user->id)->with('createur')->get();
 
         $isFollowing = Auth::user()->isFollowing($user);
-        
+
         return Inertia::render('Profile/Account', [
             'user' => $user,
             'posts' => $posts,
@@ -101,14 +101,14 @@ class ProfileController extends Controller
     public function avatarAttachment(string $fileName)
     {
         return response()->file(
-            Storage::disk('public')->path("UserAvatar/$fileName")
+            Storage::disk('public')->path("UserAvatar/$fileName.webp")
         );
     }
 
     public function bannerAttachment(string $fileName)
     {
         return response()->file(
-            Storage::disk('public')->path("UserBanner/$fileName")
+            Storage::disk('public')->path("UserBanner/$fileName.webp")
         );
     }
 }

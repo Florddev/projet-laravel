@@ -41,7 +41,7 @@ export default function Show({ auth, post }) {
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-1 justify-between gap-3 border rounded-lg p-4">
                         <Avatar className="hidden h-10 w-10 sm:flex">
-                            <AvatarImage src={`/user/avatar/userAvatar-${post.createur.id}.webp`} alt={post.createur.name} />
+                            <AvatarImage src={`/user/avatar/userAvatar-${post.createur.id}`} alt={post.createur.name} />
                             <AvatarFallback>{post.createur.name.split(' ').map(word => word[0].toUpperCase()).join('')}</AvatarFallback>
                         </Avatar>
                         <div className="flex flex-col w-full">
@@ -61,7 +61,7 @@ export default function Show({ auth, post }) {
                                                 {Array.from({ length: post.number_of_images }).map((_, index) => (
                                                     <CarouselItem key={index} className="pl-1 lg:basis-1/2">
                                                         <div className="p-1">
-                                                            <Card className={`bg-cover bg-center`} style={{ "background-image": `url("/posts/attachement/post-${post.id}_${index}.webp")` }}>
+                                                            <Card className={`bg-cover bg-center`} style={{ "background-image": `url("/posts/attachement/post-${post.id}_${index}")` }}>
                                                                 <CardContent className="flex aspect-square items-center justify-center p-6" />
                                                             </Card>
                                                         </div>
@@ -101,7 +101,7 @@ export default function Show({ auth, post }) {
                     {post.replies && post.replies.map(reply => (
                         <div className="flex flex-1 justify-between gap-3 border rounded-lg p-4">
                         <Avatar className="hidden h-10 w-10 sm:flex">
-                            <AvatarImage src={`/user/avatar/userAvatar-${reply.user.id}.webp`} alt={reply.user.name} />
+                            <AvatarImage src={`/user/avatar/userAvatar-${reply.user.id}`} alt={reply.user.name} />
                             <AvatarFallback>{reply.user.name.split(' ').map(word => word[0].toUpperCase()).join('')}</AvatarFallback>
                         </Avatar>
                         <div className="flex flex-col w-full">
