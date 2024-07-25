@@ -23,7 +23,6 @@ function debounce(func, wait) {
 }
 
 export default function SearchPage({ postResults = [], userResults = [], search = '' }) {
-    console.log({ postResults, userResults, search });
 
     const [searchTerm, setSearchTerm] = useState(search);
 
@@ -58,7 +57,7 @@ export default function SearchPage({ postResults = [], userResults = [], search 
                             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                             <Input
                                 type="search"
-                                placeholder={ __('search') }
+                                placeholder={__('search')}
                                 className="w-full appearance-none bg-background pl-8 shadow-none bg-muted/40"
                                 value={searchTerm}
                                 onChange={handleSearchChange}
@@ -73,7 +72,7 @@ export default function SearchPage({ postResults = [], userResults = [], search 
                         {userResults.map((user, index) => (
                             <div key={index} className="flex flex-1 justify-between gap-3 border rounded-lg roude p-4">
                                 <Avatar className="hidden h-10 w-10 sm:flex">
-                                    <AvatarImage src={`/user/avatar/userAvatar-${ user.id }.webp`} alt={ user.name } />
+                                    <AvatarImage src={`/user/avatar/userAvatar-${user.id}.webp`} alt={user.name} />
                                     <AvatarFallback>{user.name.split(' ').map(word => word[0].toUpperCase()).join('')}</AvatarFallback>
                                 </Avatar>
                                 <div className="flex flex-col w-full">
@@ -96,7 +95,7 @@ export default function SearchPage({ postResults = [], userResults = [], search 
                         {postResults.map((post, index) => (
                             <div key={index} className="flex flex-1 justify-between gap-3 border rounded-lg roude p-4">
                                 <Avatar className="hidden h-10 w-10 sm:flex">
-                                    <AvatarImage src={`/user/avatar/userAvatar-${ post.createur.id }.webp`} alt={ post.createur.name } />
+                                    <AvatarImage src={`/user/avatar/userAvatar-${post.createur.id}.webp`} alt={post.createur.name} />
                                     <AvatarFallback>{post.createur.name.split(' ').map(word => word[0].toUpperCase()).join('')}</AvatarFallback>
                                 </Avatar>
                                 <div className="flex flex-col w-full">

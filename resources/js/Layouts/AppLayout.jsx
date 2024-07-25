@@ -69,7 +69,7 @@ export default function App({ current_page, children }) {
                                     6
                                 </Badge>
                             </Link>
-                            <Link href="#" className={navLinksClass(current_page === 'messages')}>
+                            <Link href={route('chat.index')} className={navLinksClass(current_page === 'messages')}>
                                 <MessageSquareText className="h-4 w-4" />
                                 {__('messages')}
                             </Link>

@@ -28,10 +28,17 @@ class ChatController extends Controller
     // Afficher les messages d'un chat spécifique
     public function show($id)
     {
-        $chat = Chat::with(['messages.user'])->findOrFail($id);
+        $userId = Auth::id();
+        $chats = Chat::where('user_id', $userId)
+            ->with(['user', 'participant'])
+            ->orWhere('participant_id', $userId)
+            ->get();
+
+        $chat = Chat::with(['messages.user'])->with('user')->with('participant')->findOrFail($id);
 
         return Inertia::render('Chat', [
             'chat' => $chat,
+            'chats' => $chats,
             'messages' => $chat->messages,
         ]);
     }
