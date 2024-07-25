@@ -1,11 +1,31 @@
 import React, { useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import AccountSidebar from '@/Components/AccountSidebar';
 import { Avatar, AvatarImage, AvatarFallback } from '@/Components/ui/avatar';
 
-export default function Account({ auth, user, posts }) {
+export default function Account({ auth, user, posts, isFollowing }) {
+    const { post } = useForm();
     const [bannerLoaded, setBannerLoaded] = useState(true);
+    const [following, setFollowing] = useState(isFollowing);
+
+    const handleFollow = () => {
+        post(route('profile.follow', user.tag), {
+            onSuccess: () => {
+                setFollowing(true);
+                console.log(following);
+            }
+        });
+    };
+
+    const handleUnfollow = () => {
+        post(route('profile.unfollow', user.tag), {
+            onSuccess: () => {
+                setFollowing(false);
+            }
+        });
+    };
+
 
     return (
         <AppLayout auth={auth}>
@@ -36,14 +56,27 @@ export default function Account({ auth, user, posts }) {
                             <main className="mt-20 px-5">
                                 <div className="flex justify-between items-center mb-4">
                                     <h1 className="text-2xl font-bold">{user.name}</h1>
-                                    { auth.user.tag === user.tag ? (
+                                    { auth.user.tag !== user.tag ? (
+                                        following ? (
+                                            <button
+                                                onClick={handleUnfollow}
+                                                className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-700 transition"
+                                            >
+                                                Se désabonner
+                                            </button>
+                                        ) : (
+                                            <button
+                                                onClick={handleFollow}
+                                                className="bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200 transition"
+                                            >
+                                                Suivre
+                                            </button>
+                                        )
+                                    ) : (
                                         <Link href="/settings" className="bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200 transition">
                                             Modifier le profil
                                         </Link>
-                                        // <button className="bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200 transition">Modifier le profil</button>
-                                    ) : (
-                                        <button className="bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200 transition">Suivre</button>
-                                    ) }
+                                    )}
                                 </div>
                                 <p className="text-gray-400">@{user.tag}</p>
                                 <p className="my-4">User bio</p>
@@ -53,8 +86,8 @@ export default function Account({ auth, user, posts }) {
                                     <span className="flex items-center"><span className="mr-1">🗓</span>Inscrit en {new Date(user.created_at).toLocaleDateString()}</span>
                                 </div>
                                 <div className="flex items-center gap-4 mt-4 text-sm">
-                                    <span><strong>40</strong> abonnements</span>
-                                    <span><strong>400</strong> abonnés</span>
+                                    <span><strong>{user.followings_count}</strong> abonnements</span>
+                                    <span><strong>{user.followers_count}</strong> abonnés</span>
                                 </div>
                             </main>
                             <nav className="mt-8">

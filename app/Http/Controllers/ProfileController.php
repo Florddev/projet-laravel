@@ -77,17 +77,20 @@ class ProfileController extends Controller
     }
 
     public function show($tag) {
-        $user = User::where('tag', $tag)->first();
+        $user = User::where('tag', $tag)->withCount(['followers', 'followings'])->firstOrFail();
 
         if (!$user) {
             abort(404);
         }
 
         $posts = Post::where('user_id', $user->id)->with('createur')->get();
+
+        $isFollowing = Auth::user()->isFollowing($user);
         
         return Inertia::render('Profile/Account', [
             'user' => $user,
             'posts' => $posts,
+            'isFollowing' => $isFollowing,
         ]);
     }
 
