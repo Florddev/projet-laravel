@@ -27,5 +27,7 @@ return [
     'send_message' => 'Send Message',
     'attach_file' => 'Attach file :name',
 
-    'news' => 'News'
+    'news' => 'News',
+    'posts' => 'Posts',
+    'users' => 'Users'
 ];

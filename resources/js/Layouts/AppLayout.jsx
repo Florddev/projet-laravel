@@ -28,10 +28,14 @@ import {
 } from "@/Components/ui/dropdown-menu";
 import __, {changeLanguage} from "@/Components/translate.jsx";
 
-export default function App({ children }) {
+export default function App({ current_page, children }) {
 
     const auth = usePage().props.auth;
-    const locale = usePage().props.locale;
+
+    const navLinksClass = (active = false) => {
+        console.log(current_page, active);
+        return `flex items-center gap-3 rounded-lg px-3 py-2 ` + (active ? `bg-muted transition-all text-primary` : `text-muted-foreground transition-all`) + ` hover:text-primary`;
+    }
 
     return (
         <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -49,30 +53,30 @@ export default function App({ children }) {
                     </div>
                     <div className="flex-1">
                         <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-                            <Link href="#" className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 transition-all text-primary hover:text-primary">
+                            <Link href={ route('home') } className={navLinksClass(current_page === 'home')}>
                                 <Home className="h-4 w-4" />
                                 { __('home') }
                             </Link>
-                            <Link href="#" className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                            <Link href={ route('explore') } className={navLinksClass(current_page === 'explore')}>
                                 <Search className="h-4 w-4" />
                                 { __('explore') }
                             </Link>
-                            <Link href="#" className="flex items-center gap-3 rounded-lg text-muted-foreground px-3 py-2 transition-all hover:text-primary">
+                            <Link href="#" className={navLinksClass(current_page === 'notifications')}>
                                 <Bell className="h-4 w-4" />
                                 { __('notifications') }
                                 <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
                                     6
                                 </Badge>
                             </Link>
-                            <Link href="#" className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                            <Link href="#" className={navLinksClass(current_page === 'messages')}>
                                 <MessageSquareText className="h-4 w-4" />
                                 { __('messages') }
                             </Link>
-                            <Link href={`/profile/${auth.user.tag}`} className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                            <Link href={`/profile/${auth.user.tag}`} className={navLinksClass(current_page === 'profile')}>
                                 <User className="h-4 w-4" />
                                 { __('profile') }
                             </Link>
-                            <Link href="/settings" className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                            <Link href="/settings" className={navLinksClass(current_page === 'settings')}>
                                 <Settings className="h-4 w-4" />
                                 { __('settings') }
                             </Link>

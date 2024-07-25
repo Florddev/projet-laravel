@@ -2,9 +2,7 @@
 
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 use App\Http\Controllers\MainController;
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +16,7 @@ use App\Http\Controllers\MainController;
 */
 
 
-
+/*
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -27,13 +25,13 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+*/
 
-
-
+/*
 Route::get('/home', function () {
     return Inertia::render('Home');
 })->middleware(['auth', 'verified'])->name('home');
-
+*/
 
 /*
 Route::get('/dashboard', function () {
@@ -46,8 +44,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/settings', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/settings', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/dashboard', [MainController::class, 'home'])->name('dashboard');
-    Route::get('/explore', [MainController::class, 'explore'])->name('main.explore');
+    Route::get('/', function(){ return to_route('home'); })->name('/');
+    Route::get('/home', [MainController::class, 'home'])->name('home');
+
+    Route::get('/explore', [MainController::class, 'explore'])->name('explore');
+    Route::get('/search/{search}', [MainController::class, 'search'])->name('search');
+
+    Route::get('/dashboard', function(){ return to_route('home'); })->name('dashboard');
 
     Route::get('/posts/attachement/{fileName}', [PostController::class, 'attachement'])->name('posts.attachement');
 
